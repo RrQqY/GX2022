@@ -8,15 +8,15 @@
 #define  Kd        0
 // 陀螺仪矫正PID参数
 #define  Kp_yaw    4.8
-#define  Ki_yaw    0.01
+#define  Ki_yaw    0
 #define  Kd_yaw    0
 // 七路矫正PID参数
-#define  Kp_seven  11
-#define  Ki_seven  0.01
+#define  Kp_seven  10.2
+#define  Ki_seven  0
 #define  Kd_seven  0
 // 转弯PID参数
 #define  Kp_yaw_turn   2
-#define  Ki_yaw_turn   0.01
+#define  Ki_yaw_turn   0
 #define  Kd_yaw_turn   0
 
 #define  YawPWM_MAX         60
@@ -25,17 +25,17 @@
 
 
 // 运动速度宏定义
-#define  forward_speed      13
-#define  back_speed         13
-#define  left_speed         17
-#define  right_speed        17
-#define  pre_slow_speed     2
-#define  left_turn_speed    12
-#define  right_turn_speed   12
+#define  forward_speed         13
+#define  back_speed            13
+#define  left_speed            17
+#define  right_speed           17
+#define  pre_slow_speed        2
+#define  left_turn_speed       12
+#define  right_turn_speed      12
 #define  pre_slow_turn_speed   7
 
 // 转向时提前停下的角度
-#define  pre_stop_turn      12
+#define  pre_stop_turn         15
 
 
 extern float targetPulses[4];

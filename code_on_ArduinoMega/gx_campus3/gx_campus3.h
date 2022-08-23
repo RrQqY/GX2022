@@ -7,6 +7,7 @@
 #include "gpio.h"
 #include "imu.h"
 #include "utilities.h"
+#include "pi.h"
 
 extern A4950MotorShield motors;
 
