@@ -1,5 +1,5 @@
 /* 2022.09工程训练大赛校赛代码 */
-#include "gx_campus2.h"
+#include "gx_campus3.h"
 
 A4950MotorShield motors;
 
@@ -37,7 +37,7 @@ void prepare()
 void start()
 {
   forward(2);
-  delay_ms(2000);
+  delay_ms(1000);
 
   back(2);
   delay_ms(1000);
@@ -49,16 +49,16 @@ void start()
   delay_ms(1000);
   
   left_turn(90);
-  delay_ms(2000);
+  delay_ms(1000);
 
   forward(2);
-  delay_ms(2000);
+  delay_ms(1000);
 
   right_turn(90);
-  delay_ms(2000);
+  delay_ms(1000);
 
   forward(2);
-  delay_ms(2000);
+  delay_ms(1000);
 }
 
 

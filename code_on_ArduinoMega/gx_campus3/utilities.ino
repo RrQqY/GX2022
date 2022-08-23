@@ -1,5 +1,5 @@
 /* 这里存储一些和其余功能的函数 */
-#include "gx_campus2.h"
+#include "gx_campus3.h"
 
 
 void delay_ms(long ms){
