@@ -1,7 +1,6 @@
 #ifndef __MOVE_H
 #define __MOVE_H
 
-
 // 电机负反馈PID参数
 #define  Kp        8
 #define  Ki        0.3
@@ -23,7 +22,6 @@
 #define  SevenPWM_MAX       80
 #define  YawPWM_turn_MAX    8
 
-
 // 运动速度宏定义
 #define  forward_speed         13
 #define  back_speed            13
@@ -33,6 +31,10 @@
 #define  left_turn_speed       12
 #define  right_turn_speed      12
 #define  pre_slow_turn_speed   7
+#define  forward_speed_align   7
+#define  back_speed_align      7
+#define  left_speed_align      7
+#define  right_speed_align     7
 
 // 转向时提前停下的角度
 #define  pre_stop_turn         15
@@ -53,8 +55,8 @@ extern void right(int line_count);               // 右平移
 extern void brake();                             // 急停
 extern void left_turn(float left_angle);         // 左转
 extern void right_turn(float right_angle);       // 右转
+extern void align();                             // 对正函数
 extern void resetPara();                         // 重置所有PID变量
-
 extern void PID_forward();                       // 前进方向的PID
 extern void PID_back();                          // 后退方向的PID
 extern void PID_left();                          // 左移方向的PID

@@ -37,28 +37,44 @@ void prepare()
 void start()
 {
   forward(2);
-  delay_ms(1000);
+  delay_ms(500);
+  align();
+  delay_ms(500);
 
   back(2);
-  delay_ms(1000);
+  delay_ms(500);
+  align();
+  delay_ms(500);
 
   left(2);
-  delay_ms(1000);
+  delay_ms(500);
+  align();
+  delay_ms(500);
 
   right(2);
-  delay_ms(1000);
+  delay_ms(500);
+  align();
+  delay_ms(500);
   
   left_turn(90);
-  delay_ms(1000);
+  delay_ms(500);
+  align();
+  delay_ms(500);
 
   forward(2);
-  delay_ms(1000);
+  delay_ms(500);
+  align();
+  delay_ms(500);
 
   right_turn(90);
-  delay_ms(1000);
+  delay_ms(500);
+  align();
+  delay_ms(500);
 
   forward(2);
-  delay_ms(1000);
+  delay_ms(500);
+  align();
+  delay_ms(500);
 
   // order_pi(2);
 }

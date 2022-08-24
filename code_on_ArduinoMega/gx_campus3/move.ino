@@ -406,6 +406,39 @@ void right_turn(float right_angle)
   //  Serial.println("right_turn");
 }
 
+
+// 对正函数（在十字节点处，姿态端正时将四七路中间灰度对线）
+void align()
+{
+  /*    水平方向矫正    */
+  while(seven_front(4) == LOW){
+    // 如果偏右
+    if((seven_front(1) == HIGH) || (seven_front(2) == HIGH) || (seven_front(3) == HIGH)){
+      move_pid(-left_speed_align, left_speed_align, left_speed_align, -left_speed_align);
+    }
+    // 如果偏左
+    else if((seven_front(5) == HIGH) || (seven_front(6) == HIGH) || (seven_front(7) == HIGH)){
+      move_pid(right_speed_align, -right_speed_align, -right_speed_align, right_speed_align);
+    }
+  }
+  brake();
+
+  /*    垂直方向矫正    */
+  while(seven_left(4) == HIGH){
+    // 如果偏上
+    if((seven_left(1) == LOW) || (seven_left(2) == LOW) || (seven_left(3) == LOW)){
+      move_pid(-back_speed_align, -back_speed_align, -back_speed_align, -back_speed_align);
+    }
+    // 如果偏下
+    else if((seven_left(5) == LOW) || (seven_left(6) == LOW) || (seven_left(7) == LOW)){
+      move_pid(forward_speed_align, forward_speed_align, forward_speed_align, forward_speed_align);
+    }
+  }
+  brake();
+
+  return ;
+}
+
 //// 用于七路水平矫正的10ms定时中断函数（测试用）
 //void seven_control() 
 //{
