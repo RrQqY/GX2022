@@ -16,6 +16,26 @@ global target_down        # 下层抓取目标顺序
 global seq_up             # 上层摆放目标顺序
 global seq_down           # 下层摆放目标顺序
 
+row = 10       # 10个动作
+col = 5        # 5个舵机
+servoAction1 = [[0 for i in range(col)] for j in range(row)]      # 抓取货物①
+servoAction2 = [[0 for i in range(col)] for j in range(row)]      # 放下货物②
+servoAction3 = [[0 for i in range(col)] for j in range(row)]      # 抓取货物③
+servoAction4 = [[0 for i in range(col)] for j in range(row)]      # 放下货物④
+servoAction5 = [[0 for i in range(col)] for j in range(row)]      # 抓取货物⑤
+servoAction6 = [[0 for i in range(col)] for j in range(row)]      # 放下货物⑥
+
+servoAction1 = [[0, 0, 90, 90, -100],
+                [68, 8, 120, 10, -100],
+                [68, -40, 53, 0, -100],
+                [],
+                [],
+                [],
+                [],
+                [],
+                [],
+                [],]
+
 
 # 初始化所有串口
 # -------- 与下位机Mega通信串口配置 --------
@@ -204,6 +224,10 @@ def order6():
 # 任务7：抓取货物⑤
 def order7():
     print("@ Start order 7")
+
+# 任务8：抓取货物⑥
+def order8():
+    print("@ Start order 8")
 
 
 

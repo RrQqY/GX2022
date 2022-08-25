@@ -9,7 +9,8 @@
    4. 上位机放下货物②
    5. 上位机抓取货物③
    6. 上位机放下货物④
-   7. 上位机抓取货物⑤    */
+   7. 上位机抓取货物⑤
+   8. 上位机放下货物⑥    */
 void order_pi(int order)
 {
   switch(order){
@@ -20,6 +21,7 @@ void order_pi(int order)
     case 5: Serial2.write("5"); delay_ms(50); break;
     case 6: Serial2.write("6"); delay_ms(50); break;
     case 7: Serial2.write("7"); delay_ms(50); break;
+    case 8: Serial2.write("8"); delay_ms(50); break;
   }
     
 }

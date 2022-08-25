@@ -112,8 +112,6 @@ void forward(int line_count)
     int temp_count = 0;                     // 当前所在线数
     int flag = 0;                           // 开始计数标志
 
-    brake();
-    resetPara();
     move_state = 1;
     is_turning = 0;
     
@@ -137,6 +135,7 @@ void forward(int line_count)
       // 数到对应的根数退出循环
       if (temp_count >= line_count) {
         brake();
+
         return;
       }
 
@@ -410,30 +409,139 @@ void right_turn(float right_angle)
 // 对正函数（在十字节点处，姿态端正时将四七路中间灰度对线）
 void align()
 {
+  /*    陀螺仪部分    */
+  // 陀螺仪PID参数
+  static float newYawPulses_align = 0;         // 四个车轮的定时中断编码器四倍频速度
+  static float feedbackYawVel_align = 0;
+  static double outYawPWM_align = 0;
+  static double outYawPWM_old_align = 0;
+  // 创建1个陀螺仪速度PID控制对象
+  static PID YawPID_align = PID(PWM_MIN, PWM_MAX, Kp_yaw, Ki_yaw, Kd_yaw);
+
   /*    水平方向矫正    */
-  while(seven_front(4) == LOW){
+  while(1){
     // 如果偏右
     if((seven_front(1) == HIGH) || (seven_front(2) == HIGH) || (seven_front(3) == HIGH)){
       move_pid(-left_speed_align, left_speed_align, left_speed_align, -left_speed_align);
+
+      // 陀螺仪矫正pid控制器
+      feedbackYawVel_align = get_yaw();
+    //  Serial.println(feedbackYawVel);
+      outYawPWM_align = YawPID_align.Compute(targetYawPulses, feedbackYawVel_align);
+      if(outYawPWM_align > YawPWM_MAX){
+          outYawPWM_align = YawPWM_MAX;
+      }  
+    
+      // 将陀螺仪矫正速度加到编码器目标速度上，除5是为了将PWM转换为编码器脉冲数
+      targetPulses[0] -= (outYawPWM_align - outYawPWM_old_align)/5;
+      targetPulses[1] += (outYawPWM_align - outYawPWM_old_align)/5;
+      targetPulses[2] -= (outYawPWM_align - outYawPWM_old_align)/5;
+      targetPulses[3] += (outYawPWM_align - outYawPWM_old_align)/5;
+
+      outYawPWM_old_align = outYawPWM_align;
+
+      delay_ms(5);
     }
     // 如果偏左
     else if((seven_front(5) == HIGH) || (seven_front(6) == HIGH) || (seven_front(7) == HIGH)){
       move_pid(right_speed_align, -right_speed_align, -right_speed_align, right_speed_align);
+
+      // 陀螺仪矫正pid控制器
+      feedbackYawVel_align = get_yaw();
+    //  Serial.println(feedbackYawVel);
+      outYawPWM_align = YawPID_align.Compute(targetYawPulses, feedbackYawVel_align);
+      if(outYawPWM_align > YawPWM_MAX){
+          outYawPWM_align = YawPWM_MAX;
+      }  
+    
+      // 将陀螺仪矫正速度加到编码器目标速度上，除5是为了将PWM转换为编码器脉冲数
+      targetPulses[0] -= (outYawPWM_align - outYawPWM_old_align)/5;
+      targetPulses[1] += (outYawPWM_align - outYawPWM_old_align)/5;
+      targetPulses[2] -= (outYawPWM_align - outYawPWM_old_align)/5;
+      targetPulses[3] += (outYawPWM_align - outYawPWM_old_align)/5;
+
+      outYawPWM_old_align = outYawPWM_align;
+      // 陀螺仪矫正pid控制器
+      feedbackYawVel_align = get_yaw();
+    //  Serial.println(feedbackYawVel);
+      outYawPWM_align = YawPID_align.Compute(targetYawPulses, feedbackYawVel_align);
+      if(outYawPWM_align > YawPWM_MAX){
+          outYawPWM_align = YawPWM_MAX;
+      }  
+    
+      // 将陀螺仪矫正速度加到编码器目标速度上，除5是为了将PWM转换为编码器脉冲数
+      targetPulses[0] -= (outYawPWM_align - outYawPWM_old_align)/5;
+      targetPulses[1] += (outYawPWM_align - outYawPWM_old_align)/5;
+      targetPulses[2] -= (outYawPWM_align - outYawPWM_old_align)/5;
+      targetPulses[3] += (outYawPWM_align - outYawPWM_old_align)/5;
+
+      outYawPWM_old_align = outYawPWM_align;
+      delay_ms(5);
+    }
+    else if(seven_front(4) == HIGH){
+      delay_ms(1);
+      if(seven_front(4) == HIGH){
+        break;  
+      }
     }
   }
+  delay_ms(100);
   brake();
-
+  
   /*    垂直方向矫正    */
-  while(seven_left(4) == HIGH){
+  while(1){
     // 如果偏上
-    if((seven_left(1) == LOW) || (seven_left(2) == LOW) || (seven_left(3) == LOW)){
-      move_pid(-back_speed_align, -back_speed_align, -back_speed_align, -back_speed_align);
+    if((seven_right(1) == HIGH) || (seven_right(2) == HIGH) || (seven_right(3) == HIGH)){
+      move_pid(forward_speed_align, forward_speed_align, forward_speed_align, forward_speed_align);
+
+      // 陀螺仪矫正pid控制器
+      feedbackYawVel_align = get_yaw();
+    //  Serial.println(feedbackYawVel);
+      outYawPWM_align = YawPID_align.Compute(targetYawPulses, feedbackYawVel_align);
+      if(outYawPWM_align > YawPWM_MAX){
+          outYawPWM_align = YawPWM_MAX;
+      }  
+    
+      // 将陀螺仪矫正速度加到编码器目标速度上，除5是为了将PWM转换为编码器脉冲数
+      targetPulses[0] -= (outYawPWM_align - outYawPWM_old_align)/5;
+      targetPulses[1] += (outYawPWM_align - outYawPWM_old_align)/5;
+      targetPulses[2] -= (outYawPWM_align - outYawPWM_old_align)/5;
+      targetPulses[3] += (outYawPWM_align - outYawPWM_old_align)/5;
+
+      outYawPWM_old_align = outYawPWM_align;
+
+      delay_ms(5);
     }
     // 如果偏下
-    else if((seven_left(5) == LOW) || (seven_left(6) == LOW) || (seven_left(7) == LOW)){
-      move_pid(forward_speed_align, forward_speed_align, forward_speed_align, forward_speed_align);
+    else if((seven_right(5) == HIGH) || (seven_right(6) == HIGH) || (seven_right(7) == HIGH)){
+      move_pid(-back_speed_align, -back_speed_align, -back_speed_align, -back_speed_align);
+
+      // 陀螺仪矫正pid控制器
+      feedbackYawVel_align = get_yaw();
+    //  Serial.println(feedbackYawVel);
+      outYawPWM_align = YawPID_align.Compute(targetYawPulses, feedbackYawVel_align);
+      if(outYawPWM_align > YawPWM_MAX){
+          outYawPWM_align = YawPWM_MAX;
+      }  
+    
+      // 将陀螺仪矫正速度加到编码器目标速度上，除5是为了将PWM转换为编码器脉冲数
+      targetPulses[0] -= (outYawPWM_align - outYawPWM_old_align)/5;
+      targetPulses[1] += (outYawPWM_align - outYawPWM_old_align)/5;
+      targetPulses[2] -= (outYawPWM_align - outYawPWM_old_align)/5;
+      targetPulses[3] += (outYawPWM_align - outYawPWM_old_align)/5;
+
+      outYawPWM_old_align = outYawPWM_align;
+      
+      delay_ms(5);
+    }
+    else if(seven_right(4) == HIGH){
+      delay_ms(5);
+      if(seven_right(4) == HIGH){
+        break;  
+      }
     }
   }
+  delay_ms(100);
   brake();
 
   return ;
@@ -491,6 +599,8 @@ void PID_forward()
   targetPulses[3] += (outSevenPWM_forward - outSevenPWM_old_forward)/5;
 
   outSevenPWM_old_forward = outSevenPWM_forward;
+
+  Serial.println(outSevenPWM_forward);
 
   /*    陀螺仪部分    */
   // 陀螺仪PID参数
@@ -757,34 +867,42 @@ void PID_right_turn()
 int get_seven(int witch)
 { 
   int sense_value = 0;
-  int error = 0;
+  static double error = 0;
+
   switch(witch){
-      case 1: sense_value = 1 * seven_front(1) + 3 * seven_front(2) + 5 * seven_front(3) + 7 * seven_front(4) + 
-                      9 * seven_front(5) + 11 * seven_front(6) + 13 * seven_front(7); break;
-      case 2: sense_value = 1 * seven_back(1) + 3 * seven_back(2) + 5 * seven_back(3) + 7 * seven_back(4) + 
-                      9 * seven_back(5) + 11 * seven_back(6) + 13 * seven_back(7); break;
-      case 3: sense_value = 1 * seven_left(1) + 3 * seven_left(2) + 5 * seven_left(3) + 7 * seven_left(4) + 
-                      9 * seven_left(5) + 11 * seven_left(6) + 13 * seven_left(7); break;
-      case 4: sense_value = 1 * seven_right(1) + 3 * seven_right(2) + 5 * seven_right(3) + 7 * seven_right(4) + 
-                      9 * seven_right(5) + 11 * seven_right(6) + 13 * seven_right(7); break;
+      case 1: sense_value = 1 * seven_front(1) + 4 * seven_front(2) + 7 * seven_front(3) + 10 * seven_front(4) + 
+                      13 * seven_front(5) + 16 * seven_front(6) + 19 * seven_front(7); break;
+      case 2: sense_value = 1 * seven_back(1) + 4 * seven_back(2) + 7 * seven_back(3) + 10 * seven_back(4) + 
+                      13 * seven_back(5) + 16 * seven_back(6) + 19 * seven_back(7); break;
+      case 3: sense_value = 1 * seven_left(1) + 4 * seven_left(2) + 7 * seven_left(3) + 10 * seven_left(4) + 
+                      13 * seven_left(5) + 16 * seven_left(6) + 19 * seven_left(7); break;
+      case 4: sense_value = 1 * seven_right(1) + 4 * seven_right(2) + 7 * seven_right(3) + 10 * seven_right(4) + 
+                      13 * seven_right(5) + 16 * seven_right(6) + 19 * seven_right(7); break;
       default: sense_value = 0; break;
   }
 
   switch (sense_value) {
-      case 1:  error = -3.6; break;
-      case 4:  error = -3.6;   break;
-      case 3:  error = -3.6; break;
-      case 8:  error = -3.4;   break;
-      case 5:  error = -2.8; break;
-      case 12: error = -2;   break;
-      case 7:  error = 0;    break;
-      case 16: error = 2;    break;
-      case 9:  error = 2.8;  break;
-      case 20: error = 3.4;    break;
-      case 11: error = 3.6;  break;
-      case 24: error = 3.6;    break;
-      case 13: error = 3.6;  break;
-      default: error = 0;    break;
+      case 1:  error = -4; break;          // 1
+      case 5:  error = -3.8; break;        // 1 2
+      case 4:  error = -3.6;   break;      // 2
+      case 12:  error = -3.6; break;       // 1 2 3
+      case 11:  error = -3.4;   break;     // 2 3
+      case 7:  error = -3; break;        // 3
+      case 21: error = -3;   break;      // 2 3 4 
+      case 17:  error = -2.6;    break;    // 3 4
+      case 10: error = 0;    break;        // 4
+      case 30:  error = 0;  break;         // 3 4 5
+      case 23: error = 2.6;    break;      // 4 5
+      case 13: error = 3;  break;        // 5
+      case 39: error = 3;    break;      // 4 5 6
+      case 29: error = 3.4;  break;        // 5 6
+      case 16: error = 3.6;  break;        // 6
+      case 48: error = 3.6;  break;        // 5 6 7
+      case 35: error = 3.8;  break;        // 6 7
+      case 19: error = 4;  break;          // 7
+      default: if(error == 4) error = 4.2;
+               else if(error == -4) error = -4.2;
+               break;
     }
 
   return error;

@@ -6,11 +6,11 @@
 #define  Ki        0.3
 #define  Kd        0
 // 陀螺仪矫正PID参数
-#define  Kp_yaw    4.8
+#define  Kp_yaw    4.6    // 4.8
 #define  Ki_yaw    0
 #define  Kd_yaw    0
 // 七路矫正PID参数
-#define  Kp_seven  10.2
+#define  Kp_seven  10
 #define  Ki_seven  0
 #define  Kd_seven  0
 // 转弯PID参数
@@ -25,12 +25,12 @@
 // 运动速度宏定义
 #define  forward_speed         13
 #define  back_speed            13
-#define  left_speed            17
-#define  right_speed           17
+#define  left_speed            16
+#define  right_speed           16
 #define  pre_slow_speed        2
-#define  left_turn_speed       12
-#define  right_turn_speed      12
-#define  pre_slow_turn_speed   7
+#define  left_turn_speed       13
+#define  right_turn_speed      13
+#define  pre_slow_turn_speed   8
 #define  forward_speed_align   7
 #define  back_speed_align      7
 #define  left_speed_align      7

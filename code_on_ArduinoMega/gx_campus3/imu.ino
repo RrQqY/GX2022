@@ -95,7 +95,7 @@ void imu_setup() {
 }
 
 // IMU获取yaw角数据
-float get_yaw(){
+float get_yaw0(){
     // read a packet from FIFO
     if (mpu.dmpGetCurrentFIFOPacket(fifoBuffer)) {
       mpu.dmpGetQuaternion(&q, fifoBuffer);
@@ -104,4 +104,13 @@ float get_yaw(){
       
       return (ypr[0] * 180 * turn_angle_comp / M_PI);
     }
+}
+
+// IMU获取yaw角数据（用HWT101）
+float get_yaw(){
+  while(Serial3.available()){
+    JY901.CopeSerialData(Serial3.read()); //Call JY901 data cope function
+  }
+
+  return -(float)JY901.stcAngle.Angle[2]/32768*180;
 }

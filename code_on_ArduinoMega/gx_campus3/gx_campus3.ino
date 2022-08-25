@@ -9,6 +9,7 @@ void setup()
   // 串口初始化
   Serial.begin(BAUDRATE);
   Serial2.begin(115200);        // 与树莓派上位机通信串口初始化
+  Serial3.begin(115200);        // 与IMU通信串口初始化
 
   // IMU初始化
   imu_setup();
@@ -36,45 +37,32 @@ void prepare()
 // 开始函数
 void start()
 {
-  forward(2);
-  delay_ms(500);
-  align();
-  delay_ms(500);
-
-  back(2);
-  delay_ms(500);
-  align();
-  delay_ms(500);
+//  forward(2);
+//  delay_ms(1000);
+//
+//  back(2);
+//  delay_ms(1000);
 
   left(2);
-  delay_ms(500);
-  align();
-  delay_ms(500);
+  delay_ms(1000);
 
   right(2);
-  delay_ms(500);
-  align();
-  delay_ms(500);
+  delay_ms(1000);
   
   left_turn(90);
-  delay_ms(500);
-  align();
-  delay_ms(500);
+  delay_ms(1000);
 
   forward(2);
-  delay_ms(500);
-  align();
-  delay_ms(500);
+  delay_ms(1000);
 
   right_turn(90);
-  delay_ms(500);
-  align();
-  delay_ms(500);
+  delay_ms(1000);
 
   forward(2);
-  delay_ms(500);
-  align();
-  delay_ms(500);
+  delay_ms(1000);
+
+  // align();
+  // delay_ms(1000);
 
   // order_pi(2);
 }
