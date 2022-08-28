@@ -8,6 +8,7 @@ import cv2
 import numpy as np
 import struct
 import sys
+import servoActions as sa
 
 sys.path.append(u"../../src")      # 添加uservo.py的系统路径
 
@@ -15,26 +16,6 @@ global target_up          # 上层抓取目标顺序
 global target_down        # 下层抓取目标顺序
 global seq_up             # 上层摆放目标顺序
 global seq_down           # 下层摆放目标顺序
-
-row = 10       # 10个动作
-col = 5        # 5个舵机
-servoAction1 = [[0 for i in range(col)] for j in range(row)]      # 抓取货物①
-servoAction2 = [[0 for i in range(col)] for j in range(row)]      # 放下货物②
-servoAction3 = [[0 for i in range(col)] for j in range(row)]      # 抓取货物③
-servoAction4 = [[0 for i in range(col)] for j in range(row)]      # 放下货物④
-servoAction5 = [[0 for i in range(col)] for j in range(row)]      # 抓取货物⑤
-servoAction6 = [[0 for i in range(col)] for j in range(row)]      # 放下货物⑥
-
-servoAction1 = [[0, 0, 90, 90, -100],
-                [68, 8, 120, 10, -100],
-                [68, -40, 53, 0, -100],
-                [],
-                [],
-                [],
-                [],
-                [],
-                [],
-                [],]
 
 
 # 初始化所有串口
@@ -69,22 +50,23 @@ OPENMV_uart = serial.Serial(port=OPENMV_PORT_NAME, baudrate=OPENMV_BAUDRATE,\
                         bytesize=8,timeout=0)
 
 # -------- 与舵机通信串口配置 --------
-# 参数配置
-SERVO_PORT_NAME =  u'/dev/ttyUSB0'		# 舵机串口号
-SERVO_BAUDRATE = 115200			        # 舵机的波特率
-SERVO_ID_0 = 0					        # 舵机的ID号
-SERVO_ID_1 = 1
-SERVO_ID_2 = 2
-SERVO_ID_3 = 3
-SERVO_ID_5 = 5
-SERVO_HAS_MTURN_FUNC = False	        # 舵机是否拥有多圈模式
+# # 参数配置
+# SERVO_PORT_NAME =  u'/dev/ttyUSB0'		# 舵机串口号
+# SERVO_BAUDRATE = 115200			        # 舵机的波特率
+# SERVO_ID_0 = 0					        # 舵机的ID号
+# SERVO_ID_1 = 1
+# SERVO_ID_2 = 2
+# SERVO_ID_3 = 3
+# SERVO_ID_5 = 5
+# SERVO_HAS_MTURN_FUNC = False	        # 舵机是否拥有多圈模式
 
-# 初始化串口
-uart = serial.Serial(port=SERVO_PORT_NAME, baudrate=SERVO_BAUDRATE,\
-                    parity=serial.PARITY_NONE, stopbits=1,\
-                    bytesize=8,timeout=0)
-# 初始化舵机管理器
-uservo = UartServoManager(uart, is_debug=True)
+# # 初始化串口
+# servo_uart = serial.Serial(port=SERVO_PORT_NAME, baudrate=SERVO_BAUDRATE,\
+#                     parity=serial.PARITY_NONE, stopbits=1,\
+#                     bytesize=8,timeout=0)
+# # 初始化舵机管理器
+# uservo = UartServoManager(servo_uart, is_debug=True)
+servo = sa.servoActions()
 
 
 # 从下位机获取当前需执行的任务编号
@@ -201,9 +183,7 @@ def order2():
 # 任务3：抓取货物①
 def order3():
     print("@ Start order 3")
-    # 设置舵机角度（指定转速单位°/s，加速时间ms，减速时间ms）
-    uservo.set_servo_angle(SERVO_ID_0, 90.0, velocity=100.0, t_acc=100, t_dec=100)   
-    uservo.wait() # 等待舵机静止
+    servo.depo_left_out()
 
 
 # 任务4：放下货物②
