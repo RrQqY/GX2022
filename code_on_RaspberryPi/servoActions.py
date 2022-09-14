@@ -7,6 +7,7 @@ from uservo import UartServoManager
 
 class servoActions():
     """
+    舵机动作类，动作方法如下：
     Get_pla1_pos1_up: 抓取货架①（场地下方）上层位置1         √
     Get_pla1_pos2_up：抓取货架①（场地下方）上层位置2         √
     Get_pla1_pos3_up：抓取货架①（场地下方）上层位置3         √
@@ -19,7 +20,7 @@ class servoActions():
     Get_pla2_pos1：抓取货架②（场地右侧）位置1
     Get_pla2_pos2：抓取货架②（场地右侧）位置2
     Get_pla2_pos3：抓取货架②（场地右侧）位置3
-    Put_pla3_pos1_down：放置货架③（场地上方）下层位置1
+    Put_pla3_pos1_down：放置货架③（场地上方）下层位置1       √
     Put_pla3_pos2_down：放置货架③（场地上方）下层位置2
     Put_pla3_pos3_down：放置货架③（场地上方）下层位置3
     Put_pla3_pos1_up：放置货架③（场地上方）上层位置1

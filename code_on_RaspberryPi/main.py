@@ -72,7 +72,6 @@ servo = sa.servoActions()
 # 从下位机获取当前需执行的任务编号
 def get_order():
     recv = ''
-
     # 获得接收缓冲区字符
     count = Mega_uart.inWaiting()
     if count != 0:
@@ -149,6 +148,8 @@ def order1():
         # 必要的软件延时
         time.sleep(0.1)
 
+        return target_up, target_down
+
 
 # 任务2：识别货架颜色
 def order2():
@@ -170,8 +171,7 @@ def order2():
                 seq_up = int(seq_up_str)
                 seq_down = int(seq_down_str)
                 print('@ Get color sequence: ', seq_up, seq_down)
-                break;
-            
+                break
             break
 
         # 清空接收缓冲区
@@ -179,10 +179,195 @@ def order2():
         # 必要的软件延时
         time.sleep(0.1)
 
+        return seq_up, seq_down
 
-# 任务3：抓取货物①
-def order3():
+
+# 在场地下方货架处抓取货物后判断其颜色，并放到指定仓库（上层）
+def judge_color_up(target_up, pos):
+    res = target_up[pos - 1]
+    if res == 1:        # 红色
+        servo.Depo_left_in()
+    elif res == 2:      # 绿色
+        servo.Depo_middle_in()
+    elif res == 3:      # 蓝色
+        servo.Depo_right_in()
+
+# 在场地下方货架处抓取货物后判断其颜色，并放到指定仓库（下层）
+def judge_color_down(target_down, pos):
+    res = target_down[pos - 1]
+    if res == 1:        # 红色
+        servo.Depo_left_in()
+    elif res == 2:      # 绿色
+        servo.Depo_middle_in()
+    elif res == 3:      # 蓝色
+        servo.Depo_right_in()
+
+
+# 任务3：抓取货物①（场地下方）上层位置
+def order3(seq_up, target_up):
     print("@ Start order 3")
+    if seq_up == 123:
+        servo.Get_pla1_pos1_up()
+        judge_color_up(target_up, 1)
+        servo.Get_pla1_pos2_up()
+        judge_color_up(target_up, 2)
+        servo.Get_pla1_pos3_up()
+        judge_color_up(target_up, 3)
+    if seq_up == 132:
+        servo.Get_pla1_pos1_up()
+        judge_color_up(target_up, 1)
+        servo.Get_pla1_pos3_up()
+        judge_color_up(target_up, 3)
+        servo.Get_pla1_pos2_up()
+        judge_color_up(target_up, 2)
+    if seq_up == 213:
+        servo.Get_pla1_pos1_up()
+        judge_color_up(target_up, 2)
+        servo.Get_pla1_pos2_up()
+        judge_color_up(target_up, 1)
+        servo.Get_pla1_pos3_up()
+        judge_color_up(target_up, 3)
+    if seq_up == 231:
+        servo.Get_pla1_pos1_up()
+        judge_color_up(target_up, 2)
+        servo.Get_pla1_pos2_up()
+        judge_color_up(target_up, 3)
+        servo.Get_pla1_pos3_up()
+        judge_color_up(target_up, 1)
+    if seq_up == 312:
+        servo.Get_pla1_pos1_up()
+        judge_color_up(target_up, 3)
+        servo.Get_pla1_pos2_up()
+        judge_color_up(target_up, 1)
+        servo.Get_pla1_pos3_up()
+        judge_color_up(target_up, 2)
+    if seq_up == 321:
+        servo.Get_pla1_pos1_up()
+        judge_color_up(target_up, 3)
+        servo.Get_pla1_pos2_up()
+        judge_color_up(target_up, 2)
+        servo.Get_pla1_pos3_up()
+        judge_color_up(target_up, 1)
+
+
+# 任务4：放下货物②（场地右侧）位置
+def order4():
+    print("@ Start order 4")
+    servo.Depo_left_out()
+    servo.Put_pla2_pos1()
+    servo.Depo_middle_out()
+    servo.Put_pla2_pos2()
+    servo.Depo_right_out()
+    servo.Put_pla2_pos3()
+
+
+# 任务5：抓取货物③（场地右侧）位置
+def order5():
+    print("@ Start order 5")
+    servo.Get_pla2_pos3()
+    servo.Depo_right_in()
+    servo.Get_pla2_pos2()
+    servo.Depo_middle_in()
+    servo.Get_pla2_pos1()
+    servo.Depo_left_in()
+
+
+# 任务6：放下货物④（场地上方）下层位置
+def order6():
+    print("@ Start order 6")
+    servo.Depo_left_out()
+    servo.Put_pla3_pos1_down()
+    servo.Depo_middle_out()
+    servo.Put_pla3_pos2_down()
+    servo.Depo_right_out()
+    servo.Put_pla3_pos3_down()
+
+
+# 任务7：抓取货物⑤（场地下方）下层位置
+def order7(seq_down, target_down):
+    print("@ Start order 7")
+    if seq_down == 123:
+        servo.Get_pla1_pos1_down()
+        judge_color_down(target_down, 1)
+        servo.Get_pla1_pos2_down()
+        judge_color_down(target_down, 2)
+        servo.Get_pla1_pos3_down()
+        judge_color_down(target_down, 3)
+    if seq_down == 132:
+        servo.Get_pla1_pos1_down()
+        judge_color_down(target_down, 1)
+        servo.Get_pla1_pos3_down()
+        judge_color_down(target_down, 3)
+        servo.Get_pla1_pos2_down()
+        judge_color_down(target_down, 2)
+    if seq_down == 213:
+        servo.Get_pla1_pos1_down()
+        judge_color_down(target_down, 2)
+        servo.Get_pla1_pos2_down()
+        judge_color_down(target_down, 1)
+        servo.Get_pla1_pos3_down()
+        judge_color_down(target_down, 3)
+    if seq_down == 231:
+        servo.Get_pla1_pos1_down()
+        judge_color_down(target_down, 2)
+        servo.Get_pla1_pos2_down()
+        judge_color_down(target_down, 3)
+        servo.Get_pla1_pos3_down()
+        judge_color_down(target_down, 1)
+    if seq_down == 312:
+        servo.Get_pla1_pos1_down()
+        judge_color_down(target_down, 3)
+        servo.Get_pla1_pos2_down()
+        judge_color_down(target_down, 1)
+        servo.Get_pla1_pos3_down()
+        judge_color_down(target_down, 2)
+    if seq_down == 321:
+        servo.Get_pla1_pos1_down()
+        judge_color_down(target_down, 3)
+        servo.Get_pla1_pos2_down()
+        judge_color_down(target_down, 2)
+        servo.Get_pla1_pos3_down()
+        judge_color_down(target_down, 1)
+
+# 任务8：抓取货物⑥（场地上方）上层位置
+def order8():
+    print("@ Start order 8")
+    servo.Depo_left_out()
+    servo.Put_pla3_pos1_up()
+    servo.Depo_middle_out()
+    servo.Put_pla3_pos2_up()
+    servo.Depo_right_out()
+    servo.Put_pla3_pos3_up()
+
+
+
+def main():
+    while True:
+        # 从下位机获取指令
+        order = get_order()
+
+        # 开始执行指令（拍摄）
+        if order == 1:
+            target_up, target_down = order1()
+        elif order == 2:
+            seq_up, seq_down = order2()
+        elif order == 3:
+            order3(seq_up, target_up)
+        elif order == 4:
+            order4()
+        elif order == 5:
+            order5()
+        elif order == 6:
+            order6()
+        elif order == 7:
+            order7(seq_down, target_down)
+
+        # 必要的软件延时
+        time.sleep(0.1)
+
+
+
+if __name__=='__main__':
     # servo.Get_pla1_pos1_up()
     # servo.Depo_left_in()
     # servo.Get_pla1_pos2_up()
@@ -200,53 +385,4 @@ def order3():
     servo.Depo_middle_out()
     servo.Put_pla3_pos1_down()
 
-
-# 任务4：放下货物②
-def order4():
-    print("@ Start order 4")
-
-
-# 任务5：抓取货物③
-def order5():
-    print("@ Start order 5")
-
-
-# 任务6：放下货物④
-def order6():
-    print("@ Start order 6")
-
-
-# 任务7：抓取货物⑤
-def order7():
-    print("@ Start order 7")
-
-# 任务8：抓取货物⑥
-def order8():
-    print("@ Start order 8")
-
-
-
-if __name__=='__main__':
-    order3();
-    # while True:
-    #     # 从下位机获取指令
-    #     order = get_order()
-
-    #     # 开始执行指令
-    #     if order == 1:
-    #         order1()
-    #     elif order == 2:
-    #         order2()
-    #     elif order == 3:
-    #         order3()
-    #     elif order == 4:
-    #         order4()
-    #     elif order == 5:
-    #         order5()
-    #     elif order == 6:
-    #         order6()
-    #     elif order == 7:
-    #         order7()
-
-    #     # 必要的软件延时
-    #     time.sleep(0.1)
+    # main()
