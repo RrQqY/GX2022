@@ -183,7 +183,22 @@ def order2():
 # 任务3：抓取货物①
 def order3():
     print("@ Start order 3")
-    servo.depo_left_out()
+    # servo.Get_pla1_pos1_up()
+    # servo.Depo_left_in()
+    # servo.Get_pla1_pos2_up()
+    # servo.Depo_middle_in()
+    # servo.Get_pla1_pos3_up()
+    # servo.Depo_right_in()
+
+    # servo.Get_pla1_pos1_down()
+    # servo.Depo_left_in()
+    # servo.Get_pla1_pos2_down()
+    # servo.Depo_middle_in()
+    # servo.Get_pla1_pos3_down()
+    # servo.Depo_right_in()
+
+    servo.Depo_middle_out()
+    servo.Put_pla3_pos1_down()
 
 
 # 任务4：放下货物②
@@ -212,25 +227,26 @@ def order8():
 
 
 if __name__=='__main__':
-    while True:
-        # 从下位机获取指令
-        order = get_order()
+    order3();
+    # while True:
+    #     # 从下位机获取指令
+    #     order = get_order()
 
-        # 开始执行指令
-        if order == 1:
-            order1()
-        elif order == 2:
-            order2()
-        elif order == 3:
-            order3()
-        elif order == 4:
-            order4()
-        elif order == 5:
-            order5()
-        elif order == 6:
-            order6()
-        elif order == 7:
-            order7()
+    #     # 开始执行指令
+    #     if order == 1:
+    #         order1()
+    #     elif order == 2:
+    #         order2()
+    #     elif order == 3:
+    #         order3()
+    #     elif order == 4:
+    #         order4()
+    #     elif order == 5:
+    #         order5()
+    #     elif order == 6:
+    #         order6()
+    #     elif order == 7:
+    #         order7()
 
-        # 必要的软件延时
-        time.sleep(0.1)
+    #     # 必要的软件延时
+    #     time.sleep(0.1)
