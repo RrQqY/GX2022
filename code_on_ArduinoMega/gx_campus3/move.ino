@@ -30,6 +30,7 @@ float targetYawPulses = 0;      // 用于控制车身的目标朝向角
 int   is_brake = 0;                   // 为1则表示正在急停，为0则表示正常运动
 int   is_turning = 0;                 // 为1则表示正在旋转，为0则表示正常运动
 int   move_state = 1;                 // 运动状态，1为直行，2为后退，3为左移，4为右移
+int   left_turn_num = 0;              // 左转次数
 
 // 创建1个电池电压对象
 Battery battery3S;
@@ -120,15 +121,18 @@ void forward(int line_count)
     delay_ms(500);
     
     while (1) {   
-      if ((seven_left(4) == LOW) || (seven_right(4) == LOW)) {                      // 检测到白色背景，开启计数准备
+      if ((seven_left(4) == LOW) && (seven_right(4) == LOW)) {                      // 检测到白色背景，开启计数准备
         flag = 1;
       }
       if ((flag == 1) && ((seven_left(4) == HIGH) && (seven_right(4) == HIGH))) {   // 由白色变为黑色线，计数一次
-        temp_count ++;          
-//        Serial.println(temp_count);                 
-        flag = 0;
-        if(temp_count < line_count){
-          delay_ms(500);        // 先走一段，跨过黑线
+        delay_ms(5);
+        if ((flag == 1) && ((seven_left(4) == HIGH) && (seven_right(4) == HIGH))) {   // 由白色变为黑色线，计数一次
+          temp_count ++;          
+  //        Serial.println(temp_count);                 
+          flag = 0;
+          if(temp_count < line_count){
+            delay_ms(500);        // 先走一段，跨过黑线
+          }
         }
       }
       
@@ -159,15 +163,18 @@ void back(int line_count)
     delay_ms(500);
     
     while (1) {   
-      if ((seven_left(4) == LOW) || (seven_right(4) == LOW)) {                      // 检测到白色背景，开启计数准备
+      if ((seven_left(4) == LOW) && (seven_right(4) == LOW)) {                      // 检测到白色背景，开启计数准备
         flag = 1;
       }
       if ((flag == 1) && ((seven_left(4) == HIGH) && (seven_right(4) == HIGH))) {   // 由白色变为黑色线，计数一次
-        temp_count ++;          
-//        Serial.println(temp_count);                 
-        flag = 0;
-        if(temp_count < line_count){
-          delay_ms(500);        // 先走一段，跨过黑线
+        delay_ms(5);
+        if ((flag == 1) && ((seven_left(4) == HIGH) && (seven_right(4) == HIGH))) {   // 由白色变为黑色线，计数一次
+          temp_count ++;          
+  //        Serial.println(temp_count);                 
+          flag = 0;
+          if(temp_count < line_count){
+            delay_ms(500);        // 先走一段，跨过黑线
+          }
         }
       }
       
@@ -207,15 +214,18 @@ void left(int line_count)
     delay_ms(500);
     
     while (1) {   
-      if ((seven_front(4) == LOW) || (seven_back(4) == LOW)) {                      // 检测到白色背景，开启计数准备
+      if ((seven_front(4) == LOW) && (seven_back(4) == LOW)) {                      // 检测到白色背景，开启计数准备
         flag = 1;
       }
       if ((flag == 1) && ((seven_front(4) == HIGH) && (seven_back(4) == HIGH))) {   // 由白色变为黑色线，计数一次
-        temp_count ++;          
-//        Serial.println(temp_count);                 
-        flag = 0;
-        if(temp_count < line_count){
-          delay_ms(500);        // 先走一段，跨过黑线
+        delay_ms(5);
+        if ((flag == 1) && ((seven_front(4) == HIGH) && (seven_back(4) == HIGH))) {   // 由白色变为黑色线，计数一次
+          temp_count ++;          
+  //        Serial.println(temp_count);                 
+          flag = 0;
+          if(temp_count < line_count){
+            delay_ms(500);        // 先走一段，跨过黑线
+          }
         }
       }
       
@@ -245,15 +255,18 @@ void right(int line_count)
     delay_ms(500);
     
     while (1) {   
-      if ((seven_front(4) == LOW) || (seven_back(4) == LOW)) {                      // 检测到白色背景，开启计数准备
+      if ((seven_front(4) == LOW) && (seven_back(4) == LOW)) {                      // 检测到白色背景，开启计数准备
         flag = 1;
       }
       if ((flag == 1) && ((seven_front(4) == HIGH) && (seven_back(4) == HIGH))) {   // 由白色变为黑色线，计数一次
-        temp_count ++;          
-//        Serial.println(temp_count);                 
-        flag = 0;
-        if(temp_count < line_count){
-          delay_ms(500);        // 先走一段，跨过黑线
+        delay_ms(5);
+        if ((flag == 1) && ((seven_front(4) == HIGH) && (seven_back(4) == HIGH))) {   // 由白色变为黑色线，计数一次
+          temp_count ++;          
+  //        Serial.println(temp_count);                 
+          flag = 0;
+          if(temp_count < line_count){
+            delay_ms(500);        // 先走一段，跨过黑线
+          }
         }
       }
       
@@ -266,6 +279,7 @@ void right(int line_count)
       PID_right();
     }
 }
+
 
 //// 用于陀螺仪矫正的10ms定时中断函数（测试用）
 //void yaw_control() {
@@ -349,13 +363,16 @@ void left_turn(float left_angle)
    targetYawPulses -= left_angle;
 
    static float angle = 0;
-   static float target_angle = targetYawPulses;
+   static float target_angle = 0;
+   target_angle = targetYawPulses + 2;
    
    // 开始左转
    move_pid(-left_turn_speed, left_turn_speed, -left_turn_speed, left_turn_speed);
+//   Serial.println("left_turn");
 
    while (1) {   
-      angle = get_yaw();
+      angle = get_yaw_pro_left(get_yaw());
+//      Serial.println(angle);
       
       // 提前减速
       if (angle <= target_angle + pre_stop_turn) {
@@ -365,12 +382,12 @@ void left_turn(float left_angle)
       // 数到对应的根数退出循环
       if (angle <= target_angle) {
         brake();
+        left_turn_num ++;
         return;
       }
 
       delay_ms(10);
     }
-  //  Serial.println("left_turn");
 }
 
 // 右转（不用PID）
@@ -381,13 +398,14 @@ void right_turn(float right_angle)
    targetYawPulses += right_angle;
 
    static float angle = 0;
-   static float target_angle = targetYawPulses;
+   static float target_angle = 0;
+   target_angle = targetYawPulses - 2;
   
    // 开始右转
    move_pid(right_turn_speed, -right_turn_speed, right_turn_speed, -right_turn_speed);
 
    while (1) {   
-      angle = get_yaw();
+      angle = get_yaw_pro_left(get_yaw());
       
       // 提前减速
       if (angle >= target_angle - pre_stop_turn) {
@@ -397,6 +415,7 @@ void right_turn(float right_angle)
       // 数到对应的根数退出循环
       if (angle >= target_angle) {
         brake();
+        left_turn_num --;
         return;
       }
 
@@ -425,7 +444,7 @@ void align()
       move_pid(-left_speed_align, left_speed_align, left_speed_align, -left_speed_align);
 
       // 陀螺仪矫正pid控制器
-      feedbackYawVel_align = get_yaw();
+      feedbackYawVel_align = get_yaw_pro_left(get_yaw());
     //  Serial.println(feedbackYawVel);
       outYawPWM_align = YawPID_align.Compute(targetYawPulses, feedbackYawVel_align);
       if(outYawPWM_align > YawPWM_MAX){
@@ -447,7 +466,7 @@ void align()
       move_pid(right_speed_align, -right_speed_align, -right_speed_align, right_speed_align);
 
       // 陀螺仪矫正pid控制器
-      feedbackYawVel_align = get_yaw();
+      feedbackYawVel_align = get_yaw_pro_left(get_yaw());
     //  Serial.println(feedbackYawVel);
       outYawPWM_align = YawPID_align.Compute(targetYawPulses, feedbackYawVel_align);
       if(outYawPWM_align > YawPWM_MAX){
@@ -462,7 +481,7 @@ void align()
 
       outYawPWM_old_align = outYawPWM_align;
       // 陀螺仪矫正pid控制器
-      feedbackYawVel_align = get_yaw();
+      feedbackYawVel_align = get_yaw_pro_left(get_yaw());
     //  Serial.println(feedbackYawVel);
       outYawPWM_align = YawPID_align.Compute(targetYawPulses, feedbackYawVel_align);
       if(outYawPWM_align > YawPWM_MAX){
@@ -495,7 +514,7 @@ void align()
       move_pid(forward_speed_align, forward_speed_align, forward_speed_align, forward_speed_align);
 
       // 陀螺仪矫正pid控制器
-      feedbackYawVel_align = get_yaw();
+      feedbackYawVel_align = get_yaw_pro_left(get_yaw());
     //  Serial.println(feedbackYawVel);
       outYawPWM_align = YawPID_align.Compute(targetYawPulses, feedbackYawVel_align);
       if(outYawPWM_align > YawPWM_MAX){
@@ -517,7 +536,7 @@ void align()
       move_pid(-back_speed_align, -back_speed_align, -back_speed_align, -back_speed_align);
 
       // 陀螺仪矫正pid控制器
-      feedbackYawVel_align = get_yaw();
+      feedbackYawVel_align = get_yaw_pro_left(get_yaw());
     //  Serial.println(feedbackYawVel);
       outYawPWM_align = YawPID_align.Compute(targetYawPulses, feedbackYawVel_align);
       if(outYawPWM_align > YawPWM_MAX){
@@ -575,9 +594,9 @@ void PID_forward()
 {
   /*    七路部分    */
   // 七路PID参数
-  static float newSevenPulses_forward = 0;         // 四个车轮的定时中断编码器四倍频速度
-  static float targetSevenPulses_forward = 0;      // 用于控制车身的目标朝向角
-  static float feedbackSevenVel_forward = 0;
+  static double newSevenPulses_forward = 0;         // 四个车轮的定时中断编码器四倍频速度
+  static double targetSevenPulses_forward = 0;      // 用于控制车身的目标朝向角
+  static double feedbackSevenVel_forward = 0;
   static double outSevenPWM_forward = 0;
   static double outSevenPWM_old_forward = 0;
   // 创建1个陀螺仪速度PID控制对象
@@ -604,15 +623,15 @@ void PID_forward()
 
   /*    陀螺仪部分    */
   // 陀螺仪PID参数
-  static float newYawPulses_forward = 0;         // 四个车轮的定时中断编码器四倍频速度
-  static float feedbackYawVel_forward = 0;
+  static double newYawPulses_forward = 0;         // 四个车轮的定时中断编码器四倍频速度
+  static double feedbackYawVel_forward = 0;
   static double outYawPWM_forward = 0;
   static double outYawPWM_old_forward = 0;
   // 创建1个陀螺仪速度PID控制对象
   static PID YawPID_forward = PID(PWM_MIN, PWM_MAX, Kp_yaw, Ki_yaw, Kd_yaw);
 
   // 陀螺仪矫正pid控制器
-  feedbackYawVel_forward = get_yaw();
+  feedbackYawVel_forward = get_yaw_pro_left(get_yaw());
 //  Serial.println(feedbackYawVel);
   outYawPWM_forward = YawPID_forward.Compute(targetYawPulses, feedbackYawVel_forward);
   if(outYawPWM_forward > YawPWM_MAX){
@@ -635,9 +654,9 @@ void PID_back()
 {
   /*    七路部分    */
   // 七路PID参数
-  static float newSevenPulses_back = 0;         // 四个车轮的定时中断编码器四倍频速度
-  static float targetSevenPulses_back = 0;      // 用于控制车身的目标朝向角
-  static float feedbackSevenVel_back = 0;
+  static double newSevenPulses_back = 0;         // 四个车轮的定时中断编码器四倍频速度
+  static double targetSevenPulses_back = 0;      // 用于控制车身的目标朝向角
+  static double feedbackSevenVel_back = 0;
   static double outSevenPWM_back = 0;
   static double outSevenPWM_old_back = 0;
   // 创建1个陀螺仪速度PID控制对象
@@ -662,15 +681,15 @@ void PID_back()
 
   /*    陀螺仪部分    */
   // 陀螺仪PID参数
-  static float newYawPulses_back = 0;         // 四个车轮的定时中断编码器四倍频速度
-  static float feedbackYawVel_back = 0;
+  static double newYawPulses_back = 0;         // 四个车轮的定时中断编码器四倍频速度
+  static double feedbackYawVel_back = 0;
   static double outYawPWM_back = 0;
   static double outYawPWM_old_back = 0;
   // 创建1个陀螺仪速度PID控制对象
   static PID YawPID_back = PID(PWM_MIN, PWM_MAX, Kp_yaw, Ki_yaw, Kd_yaw);
 
   // 陀螺仪矫正pid控制器
-  feedbackYawVel_back = get_yaw();
+  feedbackYawVel_back = get_yaw_pro_left(get_yaw());
 //  Serial.println(feedbackYawVel);
   outYawPWM_back = YawPID_back.Compute(targetYawPulses, feedbackYawVel_back);
   if(outYawPWM_back > YawPWM_MAX){
@@ -693,9 +712,9 @@ void PID_left()
 {
   /*    七路部分    */
   // 七路PID参数
-  static float newSevenPulses_left = 0;         // 四个车轮的定时中断编码器四倍频速度
-  static float targetSevenPulses_left = 0;      // 用于控制车身的目标朝向角
-  static float feedbackSevenVel_left = 0;
+  static double newSevenPulses_left = 0;         // 四个车轮的定时中断编码器四倍频速度
+  static double targetSevenPulses_left = 0;      // 用于控制车身的目标朝向角
+  static double feedbackSevenVel_left = 0;
   static double outSevenPWM_left = 0;
   static double outSevenPWM_old_left = 0;
   // 创建1个陀螺仪速度PID控制对象
@@ -720,15 +739,15 @@ void PID_left()
 
   /*    陀螺仪部分    */
   // 陀螺仪PID参数
-  static float newYawPulses_left = 0;         // 四个车轮的定时中断编码器四倍频速度
-  static float feedbackYawVel_left = 0;
+  static double newYawPulses_left = 0;         // 四个车轮的定时中断编码器四倍频速度
+  static double feedbackYawVel_left = 0;
   static double outYawPWM_left = 0;
   static double outYawPWM_old_left = 0;
   // 创建1个陀螺仪速度PID控制对象
   static PID YawPID_left = PID(PWM_MIN, PWM_MAX, Kp_yaw, Ki_yaw, Kd_yaw);
 
   // 陀螺仪矫正pid控制器
-  feedbackYawVel_left = get_yaw();
+  feedbackYawVel_left = get_yaw_pro_left(get_yaw());
 //  Serial.println(feedbackYawVel);
   outYawPWM_left = YawPID_left.Compute(targetYawPulses, feedbackYawVel_left);
   if(outYawPWM_left > YawPWM_MAX){
@@ -751,9 +770,9 @@ void PID_right()
 {  
   /*    七路部分    */
   // 七路PID参数
-  static float newSevenPulses_right = 0;         // 四个车轮的定时中断编码器四倍频速度
-  static float targetSevenPulses_right = 0;      // 用于控制车身的目标朝向角
-  static float feedbackSevenVel_right = 0;
+  static double newSevenPulses_right = 0;         // 四个车轮的定时中断编码器四倍频速度
+  static double targetSevenPulses_right = 0;      // 用于控制车身的目标朝向角
+  static double feedbackSevenVel_right = 0;
   static double outSevenPWM_right = 0;
   static double outSevenPWM_old_right = 0;
   // 创建1个陀螺仪速度PID控制对象
@@ -774,19 +793,19 @@ void PID_right()
   targetPulses[2] -= (outSevenPWM_right - outSevenPWM_old_right)/6.4;
   targetPulses[3] -= (outSevenPWM_right - outSevenPWM_old_right)/6.4;
 
-  outSevenPWM_old_right = outSevenPWM_right;\
+  outSevenPWM_old_right = outSevenPWM_right;
 
   /*    陀螺仪部分    */
   // 陀螺仪PID参数
-  static float newYawPulses_right = 0;         // 四个车轮的定时中断编码器四倍频速度
-  static float feedbackYawVel_right = 0;
+  static double newYawPulses_right = 0;         // 四个车轮的定时中断编码器四倍频速度
+  static double feedbackYawVel_right = 0;
   static double outYawPWM_right = 0;
   static double outYawPWM_old_right = 0;
   // 创建1个陀螺仪速度PID控制对象
   static PID YawPID_right = PID(PWM_MIN, PWM_MAX, Kp_yaw, Ki_yaw, Kd_yaw);
 
   // 陀螺仪矫正pid控制器
-  feedbackYawVel_right = get_yaw();
+  feedbackYawVel_right = get_yaw_pro_left(get_yaw());
 //  Serial.println(feedbackYawVel);
   outYawPWM_right = YawPID_right.Compute(targetYawPulses, feedbackYawVel_right);
   if(outYawPWM_right > YawPWM_MAX){
@@ -809,16 +828,15 @@ void PID_left_turn()
 {
   /*    陀螺仪部分    */
   // 陀螺仪PID参数
-  static float newYawPulses_left_turn = 0;         // 四个车轮的定时中断编码器四倍频速度
-  static float feedbackYawVel_left_turn = 0;
+  static double newYawPulses_left_turn = 0;         // 四个车轮的定时中断编码器四倍频速度
+  static double feedbackYawVel_left_turn = 0;
   static double outYawPWM_left_turn = 0;
   static double outYawPWM_old_left_turn = 0;
   // 创建1个陀螺仪速度PID控制对象
   static PID YawPID_left_turn = PID(PWM_MIN, 14, Kp_yaw_turn, Ki_yaw_turn, Kd_yaw_turn);
 
   // 陀螺仪矫正pid控制器
-  feedbackYawVel_left_turn = get_yaw();
-//  Serial.println(feedbackYawVel);
+  feedbackYawVel_left_turn = get_yaw_pro_left(get_yaw());
   outYawPWM_left_turn = YawPID_left_turn.Compute(targetYawPulses, feedbackYawVel_left_turn);
   if(outYawPWM_left_turn > YawPWM_turn_MAX){
       outYawPWM_left_turn = YawPWM_turn_MAX;
@@ -838,15 +856,15 @@ void PID_right_turn()
 {
   /*    陀螺仪部分    */
   // 陀螺仪PID参数
-  static float newYawPulses_right_turn = 0;         // 四个车轮的定时中断编码器四倍频速度
-  static float feedbackYawVel_right_turn = 0;
+  static double newYawPulses_right_turn = 0;         // 四个车轮的定时中断编码器四倍频速度
+  static double feedbackYawVel_right_turn = 0;
   static double outYawPWM_right_turn = 0;
   static double outYawPWM_old_right_turn = 0;
   // 创建1个陀螺仪速度PID控制对象
   static PID YawPID_right_turn = PID(PWM_MIN, 14, Kp_yaw_turn, Ki_yaw_turn, Kd_yaw_turn);
 
   // 陀螺仪矫正pid控制器
-  feedbackYawVel_right_turn = get_yaw();
+  feedbackYawVel_right_turn = get_yaw_pro_left(get_yaw());
 //  Serial.println(feedbackYawVel);
   outYawPWM_right_turn = YawPID_right_turn.Compute(targetYawPulses, feedbackYawVel_right_turn);
   if(outYawPWM_right_turn > YawPWM_turn_MAX){
@@ -921,4 +939,166 @@ void resetPara()
     outPWM[0] = 0;outPWM[1] = 0;outPWM[2] = 0;outPWM[3] = 0;
 //    newYawPulses = 0;
 //    newSevenPulses = 0; targetSevenPulses = 0; 
+}
+
+
+// 右移至右七路压线
+void right_to_rs()
+{
+    brake();
+    resetPara();
+    move_state = 4;
+    is_turning = 0;
+
+    move_pid(right_speed_slow, -right_speed_slow, -right_speed_slow, right_speed_slow);
+    
+    while (1) {   
+      if ((seven_right(1) == HIGH) && (seven_right(7) == HIGH)) {   // 由白色变为黑色线，计数一次        
+//        Serial.println(temp_count);  
+        brake();
+        forward_align_ls();
+        return;               
+      }
+
+      PID_right();
+    }
+}
+
+// 右移至左七路压线
+void right_to_ls()
+{
+    brake();
+    resetPara();
+    move_state = 4;
+    is_turning = 0;
+
+    move_pid(right_speed_slow, -right_speed_slow, -right_speed_slow, right_speed_slow);
+    
+    while (1) {   
+      if ((seven_left(1) == HIGH) && (seven_left(7) == HIGH)) {   // 由白色变为黑色线，计数一次        
+//        Serial.println(temp_count);  
+        brake();
+        forward_align_rs();
+        return;               
+      }
+
+      PID_right();
+    }
+}
+
+// 左移至右七路压线
+void left_to_rs()
+{
+    brake();
+    resetPara();
+    move_state = 3;
+    is_turning = 0;
+
+    move_pid(-left_speed_slow, left_speed_slow, left_speed_slow, -left_speed_slow);
+    
+    while (1) {   
+      if ((seven_right(1) == HIGH) && (seven_right(7) == HIGH)) {   // 由白色变为黑色线，计数一次        
+//        Serial.println(temp_count);  
+        brake();
+        forward_align_ls();
+        return;               
+      }
+
+      PID_right();
+    }
+}
+
+// 左移至左七路压线
+void left_to_ls()
+{
+    brake();
+    resetPara();
+    move_state = 3;
+    is_turning = 0;
+
+    move_pid(-left_speed_slow, left_speed_slow, left_speed_slow, -left_speed_slow);
+    
+    while (1) {   
+      if ((seven_left(1) == HIGH) && (seven_left(7) == HIGH)) {   // 由白色变为黑色线，计数一次        
+//        Serial.println(temp_count);  
+        brake();
+        forward_align_rs();
+        return;               
+      }
+
+      PID_right();
+    }
+}
+
+
+// 直行方向上矫准（用左七路）
+void forward_align_ls()
+{
+    move_state = 1;
+    is_turning = 0;
+
+    while (1) {   
+      if ((seven_left(1) == HIGH) || (seven_left(2) == HIGH) || (seven_left(3) == HIGH)) {   // 由白色变为黑色线，计数一次
+        if (seven_left(4) == HIGH) {   // 由白色变为黑色线，计数一次     
+  //        Serial.println(temp_count);   
+          delay_ms(50);              
+          if (seven_left(4) == HIGH) {   // 由白色变为黑色线，计数一次     
+  //        Serial.println(temp_count);                 
+            brake();
+            return;
+          }
+        }
+        move_pid(-back_speed_slow, -back_speed_slow, -back_speed_slow, -back_speed_slow);
+        PID_back();
+      }
+      else if ((seven_left(5) == HIGH) || (seven_left(6) == HIGH) || (seven_left(7) == HIGH)) {   // 由白色变为黑色线，计数一次
+        if (seven_left(4) == HIGH) {   // 由白色变为黑色线，计数一次     
+  //        Serial.println(temp_count);                 
+          delay_ms(50);              
+          if (seven_left(4) == HIGH) {   // 由白色变为黑色线，计数一次     
+  //        Serial.println(temp_count);                 
+            brake();
+            return;
+          }
+        }
+        move_pid(forward_speed_slow, forward_speed_slow, forward_speed_slow, forward_speed_slow);
+        PID_forward();
+      }
+    }
+}
+
+// 直行方向上矫准（用右七路）
+void forward_align_rs()
+{
+    move_state = 1;
+    is_turning = 0;
+
+    while (1) {   
+      if ((seven_right(1) == HIGH) || (seven_right(2) == HIGH) || (seven_right(3) == HIGH)) {   // 由白色变为黑色线，计数一次
+        if (seven_right(4) == HIGH) {   // 由白色变为黑色线，计数一次     
+  //        Serial.println(temp_count);                 
+          delay_ms(50);              
+          if (seven_right(4) == HIGH) {   // 由白色变为黑色线，计数一次     
+  //        Serial.println(temp_count);                 
+            brake();
+            return;
+          }
+        }
+        move_pid(forward_speed_slow, forward_speed_slow, forward_speed_slow, forward_speed_slow);
+        PID_forward();
+      }
+      else if ((seven_right(5) == HIGH) || (seven_right(6) == HIGH) || (seven_right(7) == HIGH)) {   // 由白色变为黑色线，计数一次
+        if (seven_right(4) == HIGH) {   // 由白色变为黑色线，计数一次     
+  //        Serial.println(temp_count);                 
+          delay_ms(50);              
+          if (seven_right(4) == HIGH) {   // 由白色变为黑色线，计数一次     
+  //        Serial.println(temp_count);                 
+            brake();
+            return;
+          }
+        }
+        move_pid(-back_speed_slow, -back_speed_slow, -back_speed_slow, -back_speed_slow);
+        PID_back();
+      }
+    }
 }

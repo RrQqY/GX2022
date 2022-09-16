@@ -196,11 +196,11 @@ def judge_color_up(target_up, pos):
 def judge_color_down(target_down, pos):
     res = target_down[pos - 1]
     if res == 1:        # 红色
-        servo.Depo_left_in()
+        servo.Depo_right_in()
     elif res == 2:      # 绿色
         servo.Depo_middle_in()
     elif res == 3:      # 蓝色
-        servo.Depo_right_in()
+        servo.Depo_left_in()
 
 
 # 任务3：抓取货物①（场地下方）上层位置
@@ -253,34 +253,39 @@ def order3(seq_up, target_up):
 # 任务4：放下货物②（场地右侧）位置
 def order4():
     print("@ Start order 4")
-    servo.Depo_left_out()
-    servo.Put_pla2_pos1()
-    servo.Depo_middle_out()
-    servo.Put_pla2_pos2()
+    # 从右往左放置（红绿蓝）
     servo.Depo_right_out()
     servo.Put_pla2_pos3()
+    servo.Depo_middle_out()
+    servo.Put_pla2_pos2()
+    servo.Depo_left_out()
+    servo.Put_pla2_pos1()
+    
+    
 
 
 # 任务5：抓取货物③（场地右侧）位置
 def order5():
     print("@ Start order 5")
-    servo.Get_pla2_pos3()
-    servo.Depo_right_in()
-    servo.Get_pla2_pos2()
-    servo.Depo_middle_in()
+    # 从左往右抓取（蓝绿红）
     servo.Get_pla2_pos1()
     servo.Depo_left_in()
+    servo.Get_pla2_pos2()
+    servo.Depo_middle_in()
+    servo.Get_pla2_pos3()
+    servo.Depo_right_in()
 
 
 # 任务6：放下货物④（场地上方）下层位置
 def order6():
     print("@ Start order 6")
-    servo.Depo_left_out()
-    servo.Put_pla3_pos1_down()
-    servo.Depo_middle_out()
-    servo.Put_pla3_pos2_down()
+    # 从右往左放置（红绿蓝）
     servo.Depo_right_out()
     servo.Put_pla3_pos3_down()
+    servo.Depo_middle_out()
+    servo.Put_pla3_pos2_down()
+    servo.Depo_left_out()
+    servo.Put_pla3_pos1_down()
 
 
 # 任务7：抓取货物⑤（场地下方）下层位置
@@ -332,12 +337,13 @@ def order7(seq_down, target_down):
 # 任务8：抓取货物⑥（场地上方）上层位置
 def order8():
     print("@ Start order 8")
-    servo.Depo_left_out()
-    servo.Put_pla3_pos1_up()
-    servo.Depo_middle_out()
-    servo.Put_pla3_pos2_up()
+    # 从右往左放置（红绿蓝）
     servo.Depo_right_out()
     servo.Put_pla3_pos3_up()
+    servo.Depo_middle_out()
+    servo.Put_pla3_pos2_up()
+    servo.Depo_left_out()
+    servo.Put_pla3_pos1_up()
 
 
 
@@ -368,21 +374,20 @@ def main():
 
 
 if __name__=='__main__':
-    # servo.Get_pla1_pos1_up()
-    # servo.Depo_left_in()
-    # servo.Get_pla1_pos2_up()
-    # servo.Depo_middle_in()
-    # servo.Get_pla1_pos3_up()
-    # servo.Depo_right_in()
+    servo.Servo_prepare()
 
-    # servo.Get_pla1_pos1_down()
-    # servo.Depo_left_in()
-    # servo.Get_pla1_pos2_down()
-    # servo.Depo_middle_in()
-    # servo.Get_pla1_pos3_down()
-    # servo.Depo_right_in()
-
+    servo.Depo_right_out()
+    servo.Put_pla2_pos3()
     servo.Depo_middle_out()
-    servo.Put_pla3_pos1_down()
+    servo.Put_pla2_pos2()
+    servo.Depo_left_out()
+    servo.Put_pla2_pos1()
+
+    servo.Get_pla2_pos1()
+    servo.Depo_left_in()
+    servo.Get_pla2_pos2()
+    servo.Depo_middle_in()
+    servo.Get_pla2_pos3()
+    servo.Depo_right_in()
 
     # main()

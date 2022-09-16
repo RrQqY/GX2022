@@ -27,44 +27,160 @@ void setup()
 }
 
 
+// 第一次出发
+void turn1()
+{
+  forward(1);
+  delay_ms(800);
+
+  order_pi(1);
+  delay_ms(1500);
+
+  forward(3);
+  delay_ms(800);
+
+  order_pi(2);
+  delay_ms(1500);
+
+  right_to_rs();
+  delay_ms(800);
+
+  order_pi(3);
+  delay_ms(9500);
+
+  left(1);
+  delay_ms(800);
+
+  forward(1);
+  delay_ms(800);
+
+  left_turn(90);
+  delay_ms(800);
+
+  forward(2);
+  delay_ms(800);
+
+  left_to_rs();
+  delay_ms(800);
+
+  order_pi(4);
+  delay_ms(9500);
+
+  order_pi(5);
+  delay_ms(9500);
+
+  right(1);
+  delay_ms(800);
+
+  forward(2);
+  delay_ms(800);
+
+  left_turn(90);
+  delay_ms(800);
+
+  forward(3);
+  delay_ms(800);
+
+  right_to_ls();
+  delay_ms(800);
+
+  order_pi(6);
+  delay_ms(9500);
+
+  left(1);
+  delay_ms(800);
+
+  left_turn(90);
+  delay_ms(800);
+
+  forward(4);
+  delay_ms(800);
+
+  left_turn(90);
+  delay_ms(800);
+}
+
+// 第二次出发
+void turn2()
+{
+  forward(2);
+  delay_ms(800);
+
+  right_to_rs();
+  delay_ms(800);
+
+  order_pi(7);
+  delay_ms(9500);
+
+  left(1);
+  delay_ms(800);
+
+  forward(1);
+  delay_ms(800);
+
+  left_turn(90);
+  delay_ms(800);
+
+  forward(2);
+  delay_ms(800);
+
+  left_to_rs();
+  delay_ms(800);
+
+  order_pi(4);
+  delay_ms(9500);
+
+  order_pi(5);
+  delay_ms(9500);
+
+  right(1);
+  delay_ms(800);
+
+  forward(2);
+  delay_ms(800);
+
+  left_turn(90);
+  delay_ms(800);
+
+  forward(3);
+  delay_ms(800);
+
+  right_to_ls();
+  delay_ms(800);
+
+  order_pi(8);
+  delay_ms(9500);
+
+  left(1);
+  delay_ms(800);
+
+  left_turn(90);
+  delay_ms(800);
+
+  forward(2);
+  delay_ms(800);
+}
+
+
 // 准备函数
 void prepare()
 {
-    
+
 }
 
 
 // 开始函数
 void start()
 {
-//  forward(2);
-//  delay_ms(1000);
-//
-//  back(2);
-//  delay_ms(1000);
-
+  forward(1);
+  delay_ms(800);
   left(2);
-  delay_ms(1000);
+  delay_ms(800);
+  forward(1);
+  delay_ms(800);
 
-  right(2);
-  delay_ms(1000);
-  
-  left_turn(90);
-  delay_ms(1000);
-
-  forward(2);
-  delay_ms(1000);
-
-  right_turn(90);
-  delay_ms(1000);
-
-  forward(2);
-  delay_ms(1000);
-
-  // align();
-  // delay_ms(1000);
-
-  // order_pi(2);
+  turn1();
+  turn2();
 }
 
 
