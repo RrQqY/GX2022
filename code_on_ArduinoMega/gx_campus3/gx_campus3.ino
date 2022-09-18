@@ -46,7 +46,7 @@ void turn1()
   delay_ms(800);
 
   order_pi(3);
-  delay_ms(9500);
+  delay_ms(40000);
 
   left(1);
   delay_ms(800);
@@ -64,10 +64,10 @@ void turn1()
   delay_ms(800);
 
   order_pi(4);
-  delay_ms(9500);
+  delay_ms(40000);
 
   order_pi(5);
-  delay_ms(9500);
+  delay_ms(40000);
 
   right(1);
   delay_ms(800);
@@ -85,7 +85,7 @@ void turn1()
   delay_ms(800);
 
   order_pi(6);
-  delay_ms(9500);
+  delay_ms(42000);
 
   left(1);
   delay_ms(800);
@@ -110,7 +110,7 @@ void turn2()
   delay_ms(800);
 
   order_pi(7);
-  delay_ms(9500);
+  delay_ms(40000);
 
   left(1);
   delay_ms(800);
@@ -128,10 +128,10 @@ void turn2()
   delay_ms(800);
 
   order_pi(4);
-  delay_ms(9500);
+  delay_ms(40000);
 
   order_pi(5);
-  delay_ms(9500);
+  delay_ms(40000);
 
   right(1);
   delay_ms(800);
@@ -149,7 +149,7 @@ void turn2()
   delay_ms(800);
 
   order_pi(8);
-  delay_ms(9500);
+  delay_ms(42000);
 
   left(1);
   delay_ms(800);
@@ -172,13 +172,13 @@ void prepare()
 // 开始函数
 void start()
 {
-  forward(1);
-  delay_ms(800);
-  left(2);
-  delay_ms(800);
-  forward(1);
-  delay_ms(800);
-
+//  forward(1);
+//  delay_ms(800);
+//  left(2);
+//  delay_ms(800);
+//  forward(1);
+//  delay_ms(800);
+//
   turn1();
   turn2();
 }

@@ -101,7 +101,7 @@ def get_order():
         time.sleep(0.01)
         return order
     elif recv == '5':
-        order = 25
+        order = 5
         print('@ Get order 5')
         time.sleep(0.01)
         return order
@@ -124,6 +124,8 @@ def order1():
     start = '7e000801000201abcd'
     start_hex = start.decode('hex')
     recv = ''
+    target_up = 0
+    target_down = 0
     target_up_str = ''
     target_down_str = ''
 
@@ -156,6 +158,11 @@ def order2():
     print("@ Start order 2")
 
     recv = ''
+    seq_up = 0
+    seq_down = 0
+    seq_up_str = ''
+    seq_down_str = ''
+
     start_flag = "WL"
     OPENMV_uart.write(start_flag.encode('utf-8'))
 
@@ -184,22 +191,24 @@ def order2():
 
 # 在场地下方货架处抓取货物后判断其颜色，并放到指定仓库（上层）
 def judge_color_up(target_up, pos):
-    res = target_up[pos - 1]
-    if res == 1:        # 红色
+    target_up_str = str(target_up)
+    res = target_up_str[pos - 1]
+    if res == '1':        # 红色
         servo.Depo_left_in()
-    elif res == 2:      # 绿色
+    elif res == '2':      # 绿色
         servo.Depo_middle_in()
-    elif res == 3:      # 蓝色
+    elif res == '3':      # 蓝色
         servo.Depo_right_in()
 
 # 在场地下方货架处抓取货物后判断其颜色，并放到指定仓库（下层）
 def judge_color_down(target_down, pos):
-    res = target_down[pos - 1]
-    if res == 1:        # 红色
+    target_down_str = str(target_down)
+    res = target_down_str[pos - 1]
+    if res == '1':        # 红色
         servo.Depo_right_in()
-    elif res == 2:      # 绿色
+    elif res == '2':      # 绿色
         servo.Depo_middle_in()
-    elif res == 3:      # 蓝色
+    elif res == '3':      # 蓝色
         servo.Depo_left_in()
 
 
@@ -348,6 +357,7 @@ def order8():
 
 
 def main():
+    servo.Servo_prepare()
     while True:
         # 从下位机获取指令
         order = get_order()
@@ -358,6 +368,8 @@ def main():
         elif order == 2:
             seq_up, seq_down = order2()
         elif order == 3:
+            seq_up = 321
+            target_up = 123
             order3(seq_up, target_up)
         elif order == 4:
             order4()
@@ -366,6 +378,8 @@ def main():
         elif order == 6:
             order6()
         elif order == 7:
+            seq_down = 213
+            target_down = 321
             order7(seq_down, target_down)
 
         # 必要的软件延时
@@ -374,20 +388,20 @@ def main():
 
 
 if __name__=='__main__':
-    servo.Servo_prepare()
+    # servo.Servo_prepare()
 
-    servo.Depo_right_out()
-    servo.Put_pla2_pos3()
-    servo.Depo_middle_out()
-    servo.Put_pla2_pos2()
-    servo.Depo_left_out()
-    servo.Put_pla2_pos1()
+    # servo.Depo_right_out()
+    # servo.Put_pla2_pos3()
+    # servo.Depo_middle_out()
+    # servo.Put_pla2_pos2()
+    # servo.Depo_left_out()
+    # servo.Put_pla2_pos1()
 
-    servo.Get_pla2_pos1()
-    servo.Depo_left_in()
-    servo.Get_pla2_pos2()
-    servo.Depo_middle_in()
-    servo.Get_pla2_pos3()
-    servo.Depo_right_in()
+    # servo.Get_pla2_pos1()
+    # servo.Depo_left_in()
+    # servo.Get_pla2_pos2()
+    # servo.Depo_middle_in()
+    # servo.Get_pla2_pos3()
+    # servo.Depo_right_in()
 
-    # main()
+    main()

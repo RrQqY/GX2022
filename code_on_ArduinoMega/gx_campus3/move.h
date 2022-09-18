@@ -2,16 +2,16 @@
 #define __MOVE_H
 
 // 电机负反馈PID参数
-#define  Kp             8
-#define  Ki             0.3
+#define  Kp             10      // 8
+#define  Ki             0.3    // 0.3
 #define  Kd             0
 // 陀螺仪矫正PID参数
-#define  Kp_yaw         4.6    // 4.8
-#define  Ki_yaw         0.01
+#define  Kp_yaw         6    // 5.2
+#define  Ki_yaw         0
 #define  Kd_yaw         0
 // 七路矫正PID参数
 #define  Kp_seven       9.6
-#define  Ki_seven       0.01
+#define  Ki_seven       0
 #define  Kd_seven       0
 // 转弯PID参数
 #define  Kp_yaw_turn    2
@@ -30,8 +30,8 @@
 
 #define  forward_speed_slow    13
 #define  back_speed_slow       13
-#define  left_speed_slow       11
-#define  right_speed_slow      11
+#define  left_speed_slow       12
+#define  right_speed_slow      12
 
 #define  pre_slow_speed        2
 #define  left_turn_speed       13
@@ -65,10 +65,10 @@ extern void left_turn(float left_angle);         // 左转
 extern void right_turn(float right_angle);       // 右转
 extern void align();                             // 对正函数
 extern void resetPara();                         // 重置所有PID变量
-extern void PID_forward();                       // 前进方向的PID
-extern void PID_back();                          // 后退方向的PID
-extern void PID_left();                          // 左移方向的PID
-extern void PID_right();                         // 右移方向的PID
+extern void PID_forward(int clear_flag);         // 前进方向的PID
+extern void PID_back(int clear_flag);            // 后退方向的PID
+extern void PID_left(int clear_flag);            // 左移方向的PID
+extern void PID_right(int clear_flag);           // 右移方向的PID
 extern void PID_left_turn();                     // 左转的PID
 extern void PID_right_turn();                    // 右转的PID
 extern void right_to_rs();                       // 右移至右七路压线
