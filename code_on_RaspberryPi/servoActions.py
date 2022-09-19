@@ -56,7 +56,7 @@ class servoActions():
     # -------- 与货架相关的动作 --------
     # 抓取准备（起始动作）
     prepare = [[0 for i in range(5)] for j in range(1)]             
-    prepare = [[0, 0, 90, 0, -85]]
+    prepare = [[1, 0, 90, -30, -85]]
     def Servo_prepare(self):
         self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.prepare[0][0],velocity=50.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_1, servoActions.prepare[0][1],velocity=100.0, t_acc=100, t_dec=100)
@@ -73,7 +73,7 @@ class servoActions():
     pla1_pos1_up_get = [[66, 8, 120, 20, -85],       # 准备
                         [66, -51, 38, 0, -85],       # 伸到物块前
                         [66, -51, 38, 0, -110],      # 抓
-                        [66, 8, 120, 20, -110]]      # 抓回到准备位置
+                        [66, 8, 80, -70, -110]]      # 抓回到准备位置
     # 抓取货架①（场地下方）上层位置1
     def Get_pla1_pos1_up(self):
         self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.pla1_pos1_up_get[0][0],velocity=50.0, t_acc=100, t_dec=100)
@@ -100,7 +100,7 @@ class servoActions():
         self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.pla1_pos1_up_get[3][0],velocity=100.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_1, servoActions.pla1_pos1_up_get[3][1],velocity=200.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_2, servoActions.pla1_pos1_up_get[3][2],velocity=50.0, t_acc=100, t_dec=100)
-        self.uservo.set_servo_angle(self.SERVO_ID_3, servoActions.pla1_pos1_up_get[3][3],velocity=100.0, t_acc=100, t_dec=100)
+        self.uservo.set_servo_angle(self.SERVO_ID_3, servoActions.pla1_pos1_up_get[3][3],velocity=200.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_5, servoActions.pla1_pos1_up_get[3][4],velocity=100.0, t_acc=100, t_dec=100)
         # self.uservo.wait()
         time.sleep(1)
@@ -109,7 +109,7 @@ class servoActions():
     pla1_pos2_up_get = [[90, 8, 120, 20, -85],
                         [90, -38, 61, 7, -85],
                         [90, -38, 61, 7, -110],
-                        [90, 8, 120, 20, -110]]
+                        [90, 8, 80, -70, -110]]
     # 抓取货架①（场地下方）上层位置2
     def Get_pla1_pos2_up(self):
         self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.pla1_pos2_up_get[0][0],velocity=50.0, t_acc=100, t_dec=100)
@@ -136,7 +136,7 @@ class servoActions():
         self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.pla1_pos2_up_get[3][0],velocity=100.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_1, servoActions.pla1_pos2_up_get[3][1],velocity=200.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_2, servoActions.pla1_pos2_up_get[3][2],velocity=50.0, t_acc=100, t_dec=100)
-        self.uservo.set_servo_angle(self.SERVO_ID_3, servoActions.pla1_pos2_up_get[3][3],velocity=100.0, t_acc=100, t_dec=100)
+        self.uservo.set_servo_angle(self.SERVO_ID_3, servoActions.pla1_pos2_up_get[3][3],velocity=200.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_5, servoActions.pla1_pos2_up_get[3][4],velocity=100.0, t_acc=100, t_dec=100)
         # self.uservo.wait()
         time.sleep(1)
@@ -145,7 +145,7 @@ class servoActions():
     pla1_pos3_up_get = [[114, 8, 120, 20, -85],
                         [114, -51, 38, 0, -85],
                         [114, -51, 38, 0, -110],
-                        [114, 8, 120, 20, -110]]
+                        [114, 8, 80, -70, -110]]
     # 抓取货架①（场地下方）上层位置3
     def Get_pla1_pos3_up(self):
         self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.pla1_pos3_up_get[0][0],velocity=50.0, t_acc=100, t_dec=100)
@@ -172,7 +172,7 @@ class servoActions():
         self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.pla1_pos3_up_get[3][0],velocity=100.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_1, servoActions.pla1_pos3_up_get[3][1],velocity=200.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_2, servoActions.pla1_pos3_up_get[3][2],velocity=50.0, t_acc=100, t_dec=100)
-        self.uservo.set_servo_angle(self.SERVO_ID_3, servoActions.pla1_pos3_up_get[3][3],velocity=100.0, t_acc=100, t_dec=100)
+        self.uservo.set_servo_angle(self.SERVO_ID_3, servoActions.pla1_pos3_up_get[3][3],velocity=200.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_5, servoActions.pla1_pos3_up_get[3][4],velocity=100.0, t_acc=100, t_dec=100)
         # self.uservo.wait()
         time.sleep(1)
@@ -182,15 +182,15 @@ class servoActions():
     pla1_pos1_down_get = [[0 for i in range(5)] for j in range(4)]    # 抓取货架①下层位置一
     pla1_pos2_down_get = [[0 for i in range(5)] for j in range(4)]    # 抓取货架①下层位置二
     pla1_pos3_down_get = [[0 for i in range(5)] for j in range(4)]    # 抓取货架①下层位置三
-    pla1_pos1_down_get = [[65, -40, 122, 68, -85],      # 准备
+    pla1_pos1_down_get = [[65, -40, 122, 70, -85],      # 准备
                           [65, -71, 55, 36, -85],       # 伸到物块前
                           [65, -71, 55, 36, -112],       # 抓
-                          [65, -40, 135, 90, -112]]      # 抓回到准备位置
+                          [65, -24, 135, 58, -112]]      # 抓回到准备位置
     # 抓取货架①（场地下方）下层位置1
     def Get_pla1_pos1_down(self):
         self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.pla1_pos1_down_get[0][0],velocity=50.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_1, servoActions.pla1_pos1_down_get[0][1],velocity=30.0, t_acc=600, t_dec=100)
-        self.uservo.set_servo_angle(self.SERVO_ID_2, servoActions.pla1_pos1_down_get[0][2],velocity=30.0, t_acc=600, t_dec=100)
+        self.uservo.set_servo_angle(self.SERVO_ID_2, servoActions.pla1_pos1_down_get[0][2],velocity=50.0, t_acc=600, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_3, servoActions.pla1_pos1_down_get[0][3],velocity=100.0, t_acc=10, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_5, servoActions.pla1_pos1_down_get[0][4],velocity=100.0, t_acc=100, t_dec=100)
         # self.uservo.wait()
@@ -198,7 +198,7 @@ class servoActions():
         self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.pla1_pos1_down_get[1][0],velocity=50.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_1, servoActions.pla1_pos1_down_get[1][1],velocity=50.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_2, servoActions.pla1_pos1_down_get[1][2],velocity=150.0, t_acc=100, t_dec=100)
-        self.uservo.set_servo_angle(self.SERVO_ID_3, servoActions.pla1_pos1_down_get[1][3],velocity=150.0, t_acc=100, t_dec=100)
+        self.uservo.set_servo_angle(self.SERVO_ID_3, servoActions.pla1_pos1_down_get[1][3],velocity=100.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_5, servoActions.pla1_pos1_down_get[1][4],velocity=100.0, t_acc=100, t_dec=100)
         # self.uservo.wait()
         time.sleep(1)
@@ -221,12 +221,12 @@ class servoActions():
     pla1_pos2_down_get = [[90, -37, 135, 72, -85],
                           [90, -60, 84, 54, -85],
                           [90, -60, 84, 54, -112],
-                          [90, -32, 135, 72, -112]]
+                          [90, -18, 135, 52, -112]]
     # 抓取货架①（场地下方）下层位置2
     def Get_pla1_pos2_down(self):
         self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.pla1_pos2_down_get[0][0],velocity=50.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_1, servoActions.pla1_pos2_down_get[0][1],velocity=30.0, t_acc=600, t_dec=100)
-        self.uservo.set_servo_angle(self.SERVO_ID_2, servoActions.pla1_pos2_down_get[0][2],velocity=30.0, t_acc=600, t_dec=100)
+        self.uservo.set_servo_angle(self.SERVO_ID_2, servoActions.pla1_pos2_down_get[0][2],velocity=50.0, t_acc=600, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_3, servoActions.pla1_pos2_down_get[0][3],velocity=100.0, t_acc=10, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_5, servoActions.pla1_pos2_down_get[0][4],velocity=100.0, t_acc=100, t_dec=100)
         # self.uservo.wait()
@@ -254,15 +254,15 @@ class servoActions():
         time.sleep(1)
 
 
-    pla1_pos3_down_get = [[114, -40, 122, 68, -85],
+    pla1_pos3_down_get = [[114, -40, 122, 70, -85],
                           [114, -70, 55, 36, -85],
                           [114, -70, 55, 36, -112],
-                          [114, -40, 135, 90, -112]]
+                          [114, -24, 135, 58, -112]]
     # 抓取货架①（场地下方）下层位置3
     def Get_pla1_pos3_down(self):
         self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.pla1_pos3_down_get[0][0],velocity=50.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_1, servoActions.pla1_pos3_down_get[0][1],velocity=30.0, t_acc=600, t_dec=100)
-        self.uservo.set_servo_angle(self.SERVO_ID_2, servoActions.pla1_pos3_down_get[0][2],velocity=30.0, t_acc=600, t_dec=100)
+        self.uservo.set_servo_angle(self.SERVO_ID_2, servoActions.pla1_pos3_down_get[0][2],velocity=50.0, t_acc=600, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_3, servoActions.pla1_pos3_down_get[0][3],velocity=100.0, t_acc=10, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_5, servoActions.pla1_pos3_down_get[0][4],velocity=100.0, t_acc=100, t_dec=100)
         # self.uservo.wait()
@@ -270,7 +270,7 @@ class servoActions():
         self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.pla1_pos3_down_get[1][0],velocity=50.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_1, servoActions.pla1_pos3_down_get[1][1],velocity=50.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_2, servoActions.pla1_pos3_down_get[1][2],velocity=150.0, t_acc=100, t_dec=100)
-        self.uservo.set_servo_angle(self.SERVO_ID_3, servoActions.pla1_pos3_down_get[1][3],velocity=150.0, t_acc=100, t_dec=100)
+        self.uservo.set_servo_angle(self.SERVO_ID_3, servoActions.pla1_pos3_down_get[1][3],velocity=100.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_5, servoActions.pla1_pos3_down_get[1][4],velocity=100.0, t_acc=100, t_dec=100)
         # self.uservo.wait()
         time.sleep(1)
@@ -564,7 +564,7 @@ class servoActions():
                           [59, -45, 119, 85, -110],       # 放到色环上方
                           [59, -65, 122, 94, -110],       # 放到色环上
                           [59, -65, 122, 94, -80],        # 松开
-                          [59, -39, 120, 65, -80]]        # 缩回
+                          [59, -39, 120, 70, -80]]        # 缩回
     # 放置货架③（场地上方）下层位置1
     def Put_pla3_pos1_down(self):
         self.uservo.set_servo_angle(self.SERVO_ID_1, servoActions.pla3_pos1_down_put[0][1],velocity=80.0, t_acc=100, t_dec=100)
@@ -607,7 +607,7 @@ class servoActions():
                           [91, -40, 135, 85, -110],
                           [91, -49, 135, 88, -110],
                           [91, -49, 135, 88, -80],
-                          [91, -17, 131, 45, -80]]
+                          [91, -17, 131, 50, -80]]
     # 放置货架③（场地上方）下层位置2
     def Put_pla3_pos2_down(self):
         self.uservo.set_servo_angle(self.SERVO_ID_1, servoActions.pla3_pos2_down_put[0][1],velocity=80.0, t_acc=100, t_dec=100)
@@ -650,7 +650,7 @@ class servoActions():
                           [124, -45, 119, 85, -110],
                           [124, -66, 120, 94, -110],
                           [124, -66, 120, 94, -80],
-                          [124, -39, 120, 65, -80]]
+                          [124, -39, 120, 70, -80]]
     # 放置货架③（场地上方）下层位置3
     def Put_pla3_pos3_down(self):
         self.uservo.set_servo_angle(self.SERVO_ID_1, servoActions.pla3_pos3_down_put[0][1],velocity=80.0, t_acc=100, t_dec=100)
@@ -835,12 +835,12 @@ class servoActions():
     # 左货仓放入
     def Depo_left_in(self):
         self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.depo_left_in[0][0],velocity=150.0, t_acc=100, t_dec=100)
-        self.uservo.set_servo_angle(self.SERVO_ID_1, servoActions.depo_left_in[0][1],velocity=150.0, t_acc=100, t_dec=100)
+        self.uservo.set_servo_angle(self.SERVO_ID_1, servoActions.depo_left_in[0][1],velocity=100.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_2, servoActions.depo_left_in[0][2],velocity=100.0, t_acc=100, t_dec=100)
-        self.uservo.set_servo_angle(self.SERVO_ID_3, servoActions.depo_left_in[0][3],velocity=120.0, t_acc=100, t_dec=100)
+        self.uservo.set_servo_angle(self.SERVO_ID_3, servoActions.depo_left_in[0][3],velocity=150.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_5, servoActions.depo_left_in[0][4],velocity=100.0, t_acc=100, t_dec=100)
         # self.uservo.wait()
-        time.sleep(3)
+        time.sleep(2.7)
         self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.depo_left_in[1][0],velocity=100.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_1, servoActions.depo_left_in[1][1],velocity=100.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_2, servoActions.depo_left_in[1][2],velocity=100.0, t_acc=100, t_dec=100)
@@ -871,12 +871,12 @@ class servoActions():
     # 中货仓放入
     def Depo_middle_in(self):
         self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.depo_middle_in[0][0],velocity=150.0, t_acc=100, t_dec=100)
-        self.uservo.set_servo_angle(self.SERVO_ID_1, servoActions.depo_middle_in[0][1],velocity=150.0, t_acc=100, t_dec=100)
+        self.uservo.set_servo_angle(self.SERVO_ID_1, servoActions.depo_middle_in[0][1],velocity=100.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_2, servoActions.depo_middle_in[0][2],velocity=100.0, t_acc=100, t_dec=100)
-        self.uservo.set_servo_angle(self.SERVO_ID_3, servoActions.depo_middle_in[0][3],velocity=120.0, t_acc=100, t_dec=100)
+        self.uservo.set_servo_angle(self.SERVO_ID_3, servoActions.depo_middle_in[0][3],velocity=165.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_5, servoActions.depo_middle_in[0][4],velocity=100.0, t_acc=100, t_dec=100)
         # self.uservo.wait()
-        time.sleep(3)
+        time.sleep(2.7)
         self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.depo_middle_in[1][0],velocity=100.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_1, servoActions.depo_middle_in[1][1],velocity=100.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_2, servoActions.depo_middle_in[1][2],velocity=100.0, t_acc=100, t_dec=100)
@@ -907,12 +907,12 @@ class servoActions():
     # 右货仓放入
     def Depo_right_in(self):
         self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.depo_right_in[0][0],velocity=150.0, t_acc=100, t_dec=100)
-        self.uservo.set_servo_angle(self.SERVO_ID_1, servoActions.depo_right_in[0][1],velocity=150.0, t_acc=100, t_dec=100)
+        self.uservo.set_servo_angle(self.SERVO_ID_1, servoActions.depo_right_in[0][1],velocity=100.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_2, servoActions.depo_right_in[0][2],velocity=100.0, t_acc=100, t_dec=100)
-        self.uservo.set_servo_angle(self.SERVO_ID_3, servoActions.depo_right_in[0][3],velocity=120.0, t_acc=100, t_dec=100)
+        self.uservo.set_servo_angle(self.SERVO_ID_3, servoActions.depo_right_in[0][3],velocity=160.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_5, servoActions.depo_right_in[0][4],velocity=100.0, t_acc=100, t_dec=100)
         # self.uservo.wait()
-        time.sleep(3)
+        time.sleep(2.7)
         self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.depo_right_in[1][0],velocity=100.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_1, servoActions.depo_right_in[1][1],velocity=100.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_2, servoActions.depo_right_in[1][2],velocity=100.0, t_acc=100, t_dec=100)
@@ -940,10 +940,10 @@ class servoActions():
     depo_left_out =   [[0 for i in range(5)] for j in range(4)]      # 拿出左货仓
     depo_middle_out = [[0 for i in range(5)] for j in range(4)]      # 拿出中货仓
     depo_right_out =  [[0 for i in range(5)] for j in range(4)]      # 拿出右货仓
-    depo_left_out =   [[-90, -20, 67, -104, -85],       # 移到左仓库上方
+    depo_left_out =   [[-90, -20, 67, -96, -85],       # 移到左仓库上方
                        [-90, -24, 103, -62, -85],       # 移到左仓库内
                        [-90, -24, 103, -62, -115],       # 抓
-                       [-90, -20, 67, -104, -115]]       # 抬起到左仓库上方
+                       [-90, -20, 67, -96, -115]]       # 抬起到左仓库上方
     # 左货仓取出
     def Depo_left_out(self):
         self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.depo_left_out[0][0],velocity=100.0, t_acc=100, t_dec=100)

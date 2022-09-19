@@ -121,7 +121,7 @@ void forward(int line_count)
         flag = 1;
       }
       if ((flag == 1) && ((seven_left(4) == HIGH) && (seven_right(4) == HIGH))) {   // 由白色变为黑色线，计数一次
-        delay_ms(20);
+        delay_ms(10);
         if ((flag == 1) && ((seven_left(4) == HIGH) && (seven_right(4) == HIGH))) {   // 由白色变为黑色线，计数一次
           temp_count ++;          
   //        Serial.println(temp_count);                 

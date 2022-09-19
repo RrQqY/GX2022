@@ -144,13 +144,15 @@ def order1():
             target_down = int(target_down_str)
             print('@ Get target: ', target_up, target_down)
             break;
+        else :
+            print('@ No target')
         
         # 清空接收缓冲区
         GM65_uart.flushInput()
         # 必要的软件延时
         time.sleep(0.1)
 
-        return target_up, target_down
+    return target_up, target_down
 
 
 # 任务2：识别货架颜色
@@ -179,6 +181,8 @@ def order2():
                 seq_down = int(seq_down_str)
                 print('@ Get color sequence: ', seq_up, seq_down)
                 break
+            else:
+                print('@ No color sequence')
             break
 
         # 清空接收缓冲区
@@ -186,7 +190,7 @@ def order2():
         # 必要的软件延时
         time.sleep(0.1)
 
-        return seq_up, seq_down
+    return seq_up, seq_down
 
 
 # 在场地下方货架处抓取货物后判断其颜色，并放到指定仓库（上层）
@@ -194,11 +198,11 @@ def judge_color_up(target_up, pos):
     target_up_str = str(target_up)
     res = target_up_str[pos - 1]
     if res == '1':        # 红色
-        servo.Depo_left_in()
+        servo.Depo_right_in()
     elif res == '2':      # 绿色
         servo.Depo_middle_in()
     elif res == '3':      # 蓝色
-        servo.Depo_right_in()
+        servo.Depo_left_in()
 
 # 在场地下方货架处抓取货物后判断其颜色，并放到指定仓库（下层）
 def judge_color_down(target_down, pos):
@@ -230,32 +234,32 @@ def order3(seq_up, target_up):
         servo.Get_pla1_pos2_up()
         judge_color_up(target_up, 2)
     if seq_up == 213:
-        servo.Get_pla1_pos1_up()
-        judge_color_up(target_up, 2)
         servo.Get_pla1_pos2_up()
+        judge_color_up(target_up, 2)
+        servo.Get_pla1_pos1_up()
         judge_color_up(target_up, 1)
         servo.Get_pla1_pos3_up()
         judge_color_up(target_up, 3)
     if seq_up == 231:
-        servo.Get_pla1_pos1_up()
-        judge_color_up(target_up, 2)
         servo.Get_pla1_pos2_up()
-        judge_color_up(target_up, 3)
+        judge_color_up(target_up, 2)
         servo.Get_pla1_pos3_up()
+        judge_color_up(target_up, 3)
+        servo.Get_pla1_pos1_up()
         judge_color_up(target_up, 1)
     if seq_up == 312:
-        servo.Get_pla1_pos1_up()
-        judge_color_up(target_up, 3)
-        servo.Get_pla1_pos2_up()
-        judge_color_up(target_up, 1)
         servo.Get_pla1_pos3_up()
+        judge_color_up(target_up, 3)
+        servo.Get_pla1_pos1_up()
+        judge_color_up(target_up, 1)
+        servo.Get_pla1_pos2_up()
         judge_color_up(target_up, 2)
     if seq_up == 321:
-        servo.Get_pla1_pos1_up()
+        servo.Get_pla1_pos3_up()
         judge_color_up(target_up, 3)
         servo.Get_pla1_pos2_up()
         judge_color_up(target_up, 2)
-        servo.Get_pla1_pos3_up()
+        servo.Get_pla1_pos1_up()
         judge_color_up(target_up, 1)
 
 
@@ -269,8 +273,6 @@ def order4():
     servo.Put_pla2_pos2()
     servo.Depo_left_out()
     servo.Put_pla2_pos1()
-    
-    
 
 
 # 任务5：抓取货物③（场地右侧）位置
@@ -315,32 +317,32 @@ def order7(seq_down, target_down):
         servo.Get_pla1_pos2_down()
         judge_color_down(target_down, 2)
     if seq_down == 213:
-        servo.Get_pla1_pos1_down()
-        judge_color_down(target_down, 2)
         servo.Get_pla1_pos2_down()
+        judge_color_down(target_down, 2)
+        servo.Get_pla1_pos1_down()
         judge_color_down(target_down, 1)
         servo.Get_pla1_pos3_down()
         judge_color_down(target_down, 3)
     if seq_down == 231:
-        servo.Get_pla1_pos1_down()
-        judge_color_down(target_down, 2)
         servo.Get_pla1_pos2_down()
-        judge_color_down(target_down, 3)
+        judge_color_down(target_down, 2)
         servo.Get_pla1_pos3_down()
+        judge_color_down(target_down, 3)
+        servo.Get_pla1_pos1_down()
         judge_color_down(target_down, 1)
     if seq_down == 312:
-        servo.Get_pla1_pos1_down()
-        judge_color_down(target_down, 3)
-        servo.Get_pla1_pos2_down()
-        judge_color_down(target_down, 1)
         servo.Get_pla1_pos3_down()
+        judge_color_down(target_down, 3)
+        servo.Get_pla1_pos1_down()
+        judge_color_down(target_down, 1)
+        servo.Get_pla1_pos2_down()
         judge_color_down(target_down, 2)
     if seq_down == 321:
-        servo.Get_pla1_pos1_down()
+        servo.Get_pla1_pos3_down()
         judge_color_down(target_down, 3)
         servo.Get_pla1_pos2_down()
         judge_color_down(target_down, 2)
-        servo.Get_pla1_pos3_down()
+        servo.Get_pla1_pos1_down()
         judge_color_down(target_down, 1)
 
 # 任务8：抓取货物⑥（场地上方）上层位置
@@ -364,23 +366,24 @@ def main():
 
         # 开始执行指令（拍摄）
         if order == 1:
-            target_up, target_down = order1()
+            seq_up, seq_down = order1()
         elif order == 2:
-            seq_up, seq_down = order2()
+            target_up, target_down = order2()
         elif order == 3:
-            seq_up = 321
-            target_up = 123
             order3(seq_up, target_up)
+            servo.Servo_prepare()
         elif order == 4:
             order4()
+            servo.Servo_prepare()
         elif order == 5:
             order5()
+            servo.Servo_prepare()
         elif order == 6:
             order6()
+            servo.Servo_prepare()
         elif order == 7:
-            seq_down = 213
-            target_down = 321
             order7(seq_down, target_down)
+            servo.Servo_prepare()
 
         # 必要的软件延时
         time.sleep(0.1)

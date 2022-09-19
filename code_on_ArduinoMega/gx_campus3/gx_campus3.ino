@@ -31,7 +31,7 @@ void setup()
 void turn1()
 {
   forward(1);
-  delay_ms(800);
+  delay_ms(1200);
 
   order_pi(1);
   delay_ms(1500);
@@ -46,7 +46,7 @@ void turn1()
   delay_ms(800);
 
   order_pi(3);
-  delay_ms(40000);
+  delay_ms(39000);
 
   left(1);
   delay_ms(800);
@@ -67,7 +67,7 @@ void turn1()
   delay_ms(40000);
 
   order_pi(5);
-  delay_ms(40000);
+  delay_ms(42000);
 
   right(1);
   delay_ms(800);
@@ -110,7 +110,7 @@ void turn2()
   delay_ms(800);
 
   order_pi(7);
-  delay_ms(40000);
+  delay_ms(39000);
 
   left(1);
   delay_ms(800);

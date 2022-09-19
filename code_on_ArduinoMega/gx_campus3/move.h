@@ -10,8 +10,8 @@
 #define  Ki_yaw         0
 #define  Kd_yaw         0
 // 七路矫正PID参数
-#define  Kp_seven       9.6
-#define  Ki_seven       0
+#define  Kp_seven       9.8
+#define  Ki_seven       0.005
 #define  Kd_seven       0
 // 转弯PID参数
 #define  Kp_yaw_turn    2
