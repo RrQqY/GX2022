@@ -9,6 +9,7 @@ import numpy as np
 import struct
 import sys
 import servoActions as sa
+import RPi.GPIO as GPIO
 
 sys.path.append(u"../../src")      # 添加uservo.py的系统路径
 
@@ -21,7 +22,7 @@ global seq_down           # 下层摆放目标顺序
 # 初始化所有串口
 # -------- 与下位机Mega通信串口配置 --------
 # 参数配置
-Mega_PORT_NAME =  "/dev/ttyS0"		# 串口号
+Mega_PORT_NAME =  "/dev/ttyS0"		    # 串口号
 Mega_BAUDRATE  =  115200			    # 波特率
 
 # 初始化串口
@@ -41,7 +42,7 @@ GM65_uart = serial.Serial(port=GM65_PORT_NAME, baudrate=GM65_BAUDRATE,\
 
 # -------- 与OpenMV通信串口配置 --------
 # 参数配置
-OPENMV_PORT_NAME =  "/dev/ttyAMA3"		# 串口号
+OPENMV_PORT_NAME =  "/dev/ttyAMA4"		# 串口号
 OPENMV_BAUDRATE  =  9600			    # 波特率
 
 # 初始化串口
@@ -67,6 +68,10 @@ OPENMV_uart = serial.Serial(port=OPENMV_PORT_NAME, baudrate=OPENMV_BAUDRATE,\
 # # 初始化舵机管理器
 # uservo = UartServoManager(servo_uart, is_debug=True)
 servo = sa.servoActions()
+
+lightPin = 40
+GPIO.setmode(GPIO.BOARD)        # BMC或者BOARD模式
+GPIO.setup(lightPin, GPIO.OUT)
 
 
 # 从下位机获取当前需执行的任务编号
@@ -115,6 +120,11 @@ def get_order():
         print('@ Get order 7')
         time.sleep(0.01)
         return order
+    elif recv == '8':
+        order = 8
+        print('@ Get order 8')
+        time.sleep(0.01)
+        return order
 
 
 # 任务1：扫描二维码
@@ -128,6 +138,8 @@ def order1():
     target_down = 0
     target_up_str = ''
     target_down_str = ''
+
+    timeStart = time.time()
 
     while True:
         # 发送拍摄开始数据段
@@ -145,7 +157,10 @@ def order1():
             print('@ Get target: ', target_up, target_down)
             break;
         else :
-            print('@ No target')
+            timeNow = time.time()
+            if timeNow - timeStart > 1.5:
+                print('@ Time 1 out')
+                break;
         
         # 清空接收缓冲区
         GM65_uart.flushInput()
@@ -165,7 +180,10 @@ def order2():
     seq_up_str = ''
     seq_down_str = ''
 
+    timeStart = time.time()
+
     start_flag = "WL"
+    time.sleep(0.2)
     OPENMV_uart.write(start_flag.encode('utf-8'))
 
     while True:
@@ -182,8 +200,10 @@ def order2():
                 print('@ Get color sequence: ', seq_up, seq_down)
                 break
             else:
-                print('@ No color sequence')
-            break
+                timeNow = time.time()
+                if timeNow - timeStart > 1.5:
+                    print('@ Time 2 out')
+                    break
 
         # 清空接收缓冲区
         OPENMV_uart.flushInput()
@@ -359,7 +379,9 @@ def order8():
 
 
 def main():
-    servo.Servo_prepare()
+    GPIO.output(lightPin, GPIO.LOW)         # 关闭补光灯
+    servo.Servo_prepare_1()
+
     while True:
         # 从下位机获取指令
         order = get_order()
@@ -368,7 +390,11 @@ def main():
         if order == 1:
             seq_up, seq_down = order1()
         elif order == 2:
+            GPIO.output(lightPin, GPIO.HIGH)        # 打开补光灯
+            time.sleep(0.4)
+            servo.Servo_prepare_0()
             target_up, target_down = order2()
+            GPIO.output(lightPin, GPIO.LOW)         # 关闭补光灯
         elif order == 3:
             order3(seq_up, target_up)
             servo.Servo_prepare()
@@ -383,6 +409,9 @@ def main():
             servo.Servo_prepare()
         elif order == 7:
             order7(seq_down, target_down)
+            servo.Servo_prepare()
+        elif order == 8:
+            order8()
             servo.Servo_prepare()
 
         # 必要的软件延时
@@ -407,4 +436,5 @@ if __name__=='__main__':
     # servo.Get_pla2_pos3()
     # servo.Depo_right_in()
 
+    print("@ Start !!!")
     main()

@@ -21,6 +21,5 @@ void order_pi(int order)
     case 6: Serial2.write("6"); delay_ms(50); break;
     case 7: Serial2.write("7"); delay_ms(50); break;
     case 8: Serial2.write("8"); delay_ms(50); break;
-  }
-    
+  }  
 }
