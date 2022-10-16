@@ -2,16 +2,16 @@
 #define __MOVE_H
 
 // 电机负反馈PID参数
-#define  Kp             10      // 8
+#define  Kp             12      // 8
 #define  Ki             0.3    // 0.3
 #define  Kd             0
 // 陀螺仪矫正PID参数
-#define  Kp_yaw         6    // 5.2
+#define  Kp_yaw         6.4    // 5.2
 #define  Ki_yaw         0
 #define  Kd_yaw         0
 // 七路矫正PID参数
-#define  Kp_seven       9.8
-#define  Ki_seven       0.005
+#define  Kp_seven       10
+#define  Ki_seven       0
 #define  Kd_seven       0
 // 转弯PID参数
 #define  Kp_yaw_turn    2
@@ -23,15 +23,15 @@
 #define  YawPWM_turn_MAX       8
 
 // 运动速度宏定义
-#define  forward_speed         14
-#define  back_speed            14
+#define  forward_speed         18
+#define  back_speed            18
 #define  left_speed            16
 #define  right_speed           16
 
-#define  forward_speed_slow    13
-#define  back_speed_slow       13
-#define  left_speed_slow       12
-#define  right_speed_slow      12
+#define  forward_speed_slow    12
+#define  back_speed_slow       12
+#define  left_speed_slow       14
+#define  right_speed_slow      14
 
 #define  pre_slow_speed        2
 #define  left_turn_speed       13

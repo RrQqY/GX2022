@@ -18,7 +18,6 @@ global target_down        # 下层抓取目标顺序
 global seq_up             # 上层摆放目标顺序
 global seq_down           # 下层摆放目标顺序
 
-
 # 初始化所有串口
 # -------- 与下位机Mega通信串口配置 --------
 # 参数配置
@@ -37,6 +36,16 @@ GM65_BAUDRATE  = 9600			        # 波特率
 
 # 初始化串口
 GM65_uart = serial.Serial(port=GM65_PORT_NAME, baudrate=GM65_BAUDRATE,\
+                        parity=serial.PARITY_NONE, stopbits=1,\
+                        bytesize=8,timeout=0)
+
+# -------- 与LCD屏通信串口配置 --------
+# 参数配置
+LCD_PORT_NAME =  "/dev/ttyAMA3"		# 串口号
+LCD_BAUDRATE  =  115200			    # 波特率
+
+# 初始化串口
+LCD_uart = serial.Serial(port=LCD_PORT_NAME, baudrate=LCD_BAUDRATE,\
                         parity=serial.PARITY_NONE, stopbits=1,\
                         bytesize=8,timeout=0)
 
@@ -85,41 +94,49 @@ def get_order():
     # 清空接收缓冲区
     Mega_uart.flushInput()
 
+    # 任务1：扫描二维码
     if recv == '1':
         order = 1
         print('@ Get order 1')
         time.sleep(0.01)
         return order
+    # 任务2：识别货架颜色
     elif recv == '2':
         order = 2
         print('@ Get order 2')
         time.sleep(0.01)
         return order
+    # 任务3：抓取货物①（场地下方）上层位置
     elif recv == '3':
         order = 3
         print('@ Get order 3')
         time.sleep(0.01)
         return order
+    # 任务4：放下货物②（场地右侧）位置
     elif recv == '4':
         order = 4
         print('@ Get order 4')
         time.sleep(0.01)
         return order
+    # 任务5：抓取货物③（场地右侧）位置
     elif recv == '5':
         order = 5
         print('@ Get order 5')
         time.sleep(0.01)
         return order
+    # 任务6：放下货物④（场地上方）下层位置
     elif recv == '6':
         order = 6
         print('@ Get order 6')
         time.sleep(0.01)
         return order
+    # 任务7：抓取货物⑤（场地下方）下层位置
     elif recv == '7':
         order = 7
         print('@ Get order 7')
         time.sleep(0.01)
         return order
+    # 任务8：抓取货物⑥（场地上方）上层位置
     elif recv == '8':
         order = 8
         print('@ Get order 8')
@@ -167,6 +184,7 @@ def order1():
         # 必要的软件延时
         time.sleep(0.1)
 
+    LCD_print(target_up, target_down)
     return target_up, target_down
 
 
@@ -179,14 +197,19 @@ def order2():
     seq_down = 0
     seq_up_str = ''
     seq_down_str = ''
+    seq_up_old = 0
+    seq_down_old = 0
 
     timeStart = time.time()
 
     start_flag = "WL"
     time.sleep(0.2)
-    OPENMV_uart.write(start_flag.encode('utf-8'))
+    # OPENMV_uart.write(start_flag.encode('utf-8'))
 
     while True:
+        # 向OpenMV发送开始识别信号
+        OPENMV_uart.write(start_flag.encode('utf-8'))
+
         # 获得接收缓冲区字符
         count = OPENMV_uart.inWaiting()
         if count != 0:
@@ -197,8 +220,16 @@ def order2():
                 seq_down_str = recv[pos + 4 : pos + 7]
                 seq_up = int(seq_up_str)
                 seq_down = int(seq_down_str)
+
                 print('@ Get color sequence: ', seq_up, seq_down)
-                break
+
+                # 检测两次识别结果是否一致，如果一致才返回
+                if (seq_up_old == seq_up) and (seq_down_old == seq_down):
+                    print('@ Color sequence is the same')
+                    break
+                else:
+                    seq_up_old = seq_up
+                    seq_down_old = seq_down
             else:
                 timeNow = time.time()
                 if timeNow - timeStart > 1.5:
@@ -210,6 +241,7 @@ def order2():
         # 必要的软件延时
         time.sleep(0.1)
 
+    print('@ Return color sequence: ', seq_up, seq_down)
     return seq_up, seq_down
 
 
@@ -294,6 +326,64 @@ def order4():
     servo.Depo_left_out()
     servo.Put_pla2_pos1()
 
+# # 任务4：放下货物②（场地右侧）位置（按抓取顺序放置）
+# def order4(target_up, target_down):
+#     if not hasattr(order4, 'round_num'):
+#         order4.round_num = 1
+
+#     print("@ Start order 4")
+#     # 按抓取顺序放置
+#     if order4.round_num == 1:        # 第一轮，按照上层顺序放置
+#         target = target_up
+#     elif order4.round_num == 2:      # 第二轮，按照下层顺序放置
+#         target = target_down
+
+#     if target == 123:
+#         servo.Depo_left_out()
+#         servo.Put_pla2_pos1()
+#         servo.Depo_middle_out()
+#         servo.Put_pla2_pos2()
+#         servo.Depo_right_out()
+#         servo.Put_pla2_pos3()
+#     elif target == 132:
+#         servo.Depo_left_out()
+#         servo.Put_pla2_pos1()
+#         servo.Depo_right_out()
+#         servo.Put_pla2_pos3()
+#         servo.Depo_middle_out()
+#         servo.Put_pla2_pos2()
+#     elif target == 213:
+#         servo.Depo_middle_out()
+#         servo.Put_pla2_pos2()
+#         servo.Depo_left_out()
+#         servo.Put_pla2_pos1()
+#         servo.Depo_right_out()
+#         servo.Put_pla2_pos3()
+#     elif target == 231:
+#         servo.Depo_middle_out()
+#         servo.Put_pla2_pos2()
+#         servo.Depo_right_out()
+#         servo.Put_pla2_pos3()
+#         servo.Depo_left_out()
+#         servo.Put_pla2_pos1()
+#     elif target == 312:
+#         servo.Depo_right_out()
+#         servo.Put_pla2_pos3()
+#         servo.Depo_left_out()
+#         servo.Put_pla2_pos1()
+#         servo.Depo_middle_out()
+#         servo.Put_pla2_pos2()
+#     elif target == 321:
+#         servo.Depo_right_out()
+#         servo.Put_pla2_pos3()
+#         servo.Depo_middle_out()
+#         servo.Put_pla2_pos2()
+#         servo.Depo_left_out()
+#         servo.Put_pla2_pos1()
+
+#     order4.round_num = 2
+#     print("round_num = ", order4.round_num)
+
 
 # 任务5：抓取货物③（场地右侧）位置
 def order5():
@@ -308,15 +398,51 @@ def order5():
 
 
 # 任务6：放下货物④（场地上方）下层位置
-def order6():
+def order6(target_up):
     print("@ Start order 6")
     # 从右往左放置（红绿蓝）
-    servo.Depo_right_out()
-    servo.Put_pla3_pos3_down()
-    servo.Depo_middle_out()
-    servo.Put_pla3_pos2_down()
-    servo.Depo_left_out()
-    servo.Put_pla3_pos1_down()
+    if target_up == 123:
+        servo.Depo_left_out()
+        servo.Put_pla3_pos1_down()
+        servo.Depo_middle_out()
+        servo.Put_pla3_pos2_down()
+        servo.Depo_right_out()
+        servo.Put_pla3_pos3_down()
+    elif target_up == 132:
+        servo.Depo_left_out()
+        servo.Put_pla3_pos1_down()
+        servo.Depo_right_out()
+        servo.Put_pla3_pos3_down()
+        servo.Depo_middle_out()
+        servo.Put_pla3_pos2_down()
+    elif target_up == 213:
+        servo.Depo_middle_out()
+        servo.Put_pla3_pos2_down()
+        servo.Depo_left_out()
+        servo.Put_pla3_pos1_down()
+        servo.Depo_right_out()
+        servo.Put_pla3_pos3_down()
+    elif target_up == 231:
+        servo.Depo_middle_out()
+        servo.Put_pla3_pos2_down()
+        servo.Depo_right_out()
+        servo.Put_pla3_pos3_down()
+        servo.Depo_left_out()
+        servo.Put_pla3_pos1_down()
+    elif target_up == 312:
+        servo.Depo_right_out()
+        servo.Put_pla3_pos3_down()
+        servo.Depo_left_out()
+        servo.Put_pla3_pos1_down()
+        servo.Depo_middle_out()
+        servo.Put_pla3_pos2_down()
+    elif target_up == 321:
+        servo.Depo_right_out()
+        servo.Put_pla3_pos3_down()
+        servo.Depo_middle_out()
+        servo.Put_pla3_pos2_down()
+        servo.Depo_left_out()
+        servo.Put_pla3_pos1_down()
 
 
 # 任务7：抓取货物⑤（场地下方）下层位置
@@ -366,15 +492,51 @@ def order7(seq_down, target_down):
         judge_color_down(target_down, 1)
 
 # 任务8：抓取货物⑥（场地上方）上层位置
-def order8():
+def order8(target_down):
     print("@ Start order 8")
     # 从右往左放置（红绿蓝）
-    servo.Depo_right_out()
-    servo.Put_pla3_pos3_up()
-    servo.Depo_middle_out()
-    servo.Put_pla3_pos2_up()
-    servo.Depo_left_out()
-    servo.Put_pla3_pos1_up()
+    if target_down == 123:
+        servo.Depo_left_out()
+        servo.Put_pla3_pos1_up()
+        servo.Depo_middle_out()
+        servo.Put_pla3_pos2_up()
+        servo.Depo_right_out()
+        servo.Put_pla3_pos3_up()
+    elif target_down == 132:
+        servo.Depo_left_out()
+        servo.Put_pla3_pos1_up()
+        servo.Depo_right_out()
+        servo.Put_pla3_pos3_up()
+        servo.Depo_middle_out()
+        servo.Put_pla3_pos2_up()
+    elif target_down == 213:
+        servo.Depo_middle_out()
+        servo.Put_pla3_pos2_up()
+        servo.Depo_left_out()
+        servo.Put_pla3_pos1_up()
+        servo.Depo_right_out()
+        servo.Put_pla3_pos3_up()
+    elif target_down == 231:
+        servo.Depo_middle_out()
+        servo.Put_pla3_pos2_up()
+        servo.Depo_right_out()
+        servo.Put_pla3_pos3_up()
+        servo.Depo_left_out()
+        servo.Put_pla3_pos1_up()
+    elif target_down == 312:
+        servo.Depo_right_out()
+        servo.Put_pla3_pos3_up()
+        servo.Depo_left_out()
+        servo.Put_pla3_pos1_up()
+        servo.Depo_middle_out()
+        servo.Put_pla3_pos2_up()
+    elif target_down == 321:
+        servo.Depo_right_out()
+        servo.Put_pla3_pos3_up()
+        servo.Depo_middle_out()
+        servo.Put_pla3_pos2_up()
+        servo.Depo_left_out()
+        servo.Put_pla3_pos1_up()
 
 
 
@@ -385,13 +547,14 @@ def main():
     while True:
         # 从下位机获取指令
         order = get_order()
+        # order = 2
 
         # 开始执行指令（拍摄）
         if order == 1:
             seq_up, seq_down = order1()
         elif order == 2:
             GPIO.output(lightPin, GPIO.HIGH)        # 打开补光灯
-            time.sleep(0.4)
+            time.sleep(1)
             servo.Servo_prepare_0()
             target_up, target_down = order2()
             GPIO.output(lightPin, GPIO.LOW)         # 关闭补光灯
@@ -405,17 +568,97 @@ def main():
             order5()
             servo.Servo_prepare()
         elif order == 6:
-            order6()
+            order6(target_up)
             servo.Servo_prepare()
         elif order == 7:
             order7(seq_down, target_down)
             servo.Servo_prepare()
         elif order == 8:
-            order8()
+            order8(target_down)
             servo.Servo_prepare()
 
         # 必要的软件延时
         time.sleep(0.1)
+
+
+def LCD_print(target_up, target_down):
+    if target_up == 123 and target_down == 123:
+        LCD_uart.write("CLR(0);SBC(3);DIR(1);DC48(5,5,'UP_TAR:',15);DC48(240,5,'123',15);DC48(5,60,'DOWN_TAR:',15);DC48(240,60,'123',15);PL(0,120,320,120,15);\r\n")
+    elif target_up == 132 and target_down == 123:
+        LCD_uart.write("CLR(0);SBC(3);DIR(1);DC48(5,5,'UP_TAR:',15);DC48(240,5,'132',15);DC48(5,60,'DOWN_TAR:',15);DC48(240,60,'123',15);PL(0,120,320,120,15);\r\n")
+    elif target_up == 213 and target_down == 123:
+        LCD_uart.write("CLR(0);SBC(3);DIR(1);DC48(5,5,'UP_TAR:',15);DC48(240,5,'213',15);DC48(5,60,'DOWN_TAR:',15);DC48(240,60,'123',15);PL(0,120,320,120,15);\r\n")
+    elif target_up == 231 and target_down == 123:
+        LCD_uart.write("CLR(0);SBC(3);DIR(1);DC48(5,5,'UP_TAR:',15);DC48(240,5,'231',15);DC48(5,60,'DOWN_TAR:',15);DC48(240,60,'123',15);PL(0,120,320,120,15);\r\n")
+    elif target_up == 312 and target_down == 123:
+        LCD_uart.write("CLR(0);SBC(3);DIR(1);DC48(5,5,'UP_TAR:',15);DC48(240,5,'312',15);DC48(5,60,'DOWN_TAR:',15);DC48(240,60,'123',15);PL(0,120,320,120,15);\r\n")
+    elif target_up == 321 and target_down == 123:
+        LCD_uart.write("CLR(0);SBC(3);DIR(1);DC48(5,5,'UP_TAR:',15);DC48(240,5,'321',15);DC48(5,60,'DOWN_TAR:',15);DC48(240,60,'123',15);PL(0,120,320,120,15);\r\n")
+
+    elif target_up == 123 and target_down == 132:
+        LCD_uart.write("CLR(0);SBC(3);DIR(1);DC48(5,5,'UP_TAR:',15);DC48(240,5,'123',15);DC48(5,60,'DOWN_TAR:',15);DC48(240,60,'132',15);PL(0,120,320,120,15);\r\n")
+    elif target_up == 132 and target_down == 132:
+        LCD_uart.write("CLR(0);SBC(3);DIR(1);DC48(5,5,'UP_TAR:',15);DC48(240,5,'132',15);DC48(5,60,'DOWN_TAR:',15);DC48(240,60,'132',15);PL(0,120,320,120,15);\r\n")
+    elif target_up == 213 and target_down == 132:
+        LCD_uart.write("CLR(0);SBC(3);DIR(1);DC48(5,5,'UP_TAR:',15);DC48(240,5,'213',15);DC48(5,60,'DOWN_TAR:',15);DC48(240,60,'132',15);PL(0,120,320,120,15);\r\n")
+    elif target_up == 231 and target_down == 132:
+        LCD_uart.write("CLR(0);SBC(3);DIR(1);DC48(5,5,'UP_TAR:',15);DC48(240,5,'231',15);DC48(5,60,'DOWN_TAR:',15);DC48(240,60,'132',15);PL(0,120,320,120,15);\r\n")
+    elif target_up == 312 and target_down == 132:
+        LCD_uart.write("CLR(0);SBC(3);DIR(1);DC48(5,5,'UP_TAR:',15);DC48(240,5,'312',15);DC48(5,60,'DOWN_TAR:',15);DC48(240,60,'132',15);PL(0,120,320,120,15);\r\n")
+    elif target_up == 321 and target_down == 132:
+        LCD_uart.write("CLR(0);SBC(3);DIR(1);DC48(5,5,'UP_TAR:',15);DC48(240,5,'321',15);DC48(5,60,'DOWN_TAR:',15);DC48(240,60,'132',15);PL(0,120,320,120,15);\r\n")
+
+    elif target_up == 123 and target_down == 213:
+        LCD_uart.write("CLR(0);SBC(3);DIR(1);DC48(5,5,'UP_TAR:',15);DC48(240,5,'123',15);DC48(5,60,'DOWN_TAR:',15);DC48(240,60,'213',15);PL(0,120,320,120,15);\r\n")
+    elif target_up == 132 and target_down == 213:
+        LCD_uart.write("CLR(0);SBC(3);DIR(1);DC48(5,5,'UP_TAR:',15);DC48(240,5,'132',15);DC48(5,60,'DOWN_TAR:',15);DC48(240,60,'213',15);PL(0,120,320,120,15);\r\n")
+    elif target_up == 213 and target_down == 213:
+        LCD_uart.write("CLR(0);SBC(3);DIR(1);DC48(5,5,'UP_TAR:',15);DC48(240,5,'213',15);DC48(5,60,'DOWN_TAR:',15);DC48(240,60,'213',15);PL(0,120,320,120,15);\r\n")
+    elif target_up == 231 and target_down == 213:
+        LCD_uart.write("CLR(0);SBC(3);DIR(1);DC48(5,5,'UP_TAR:',15);DC48(240,5,'231',15);DC48(5,60,'DOWN_TAR:',15);DC48(240,60,'213',15);PL(0,120,320,120,15);\r\n")
+    elif target_up == 312 and target_down == 213:
+        LCD_uart.write("CLR(0);SBC(3);DIR(1);DC48(5,5,'UP_TAR:',15);DC48(240,5,'312',15);DC48(5,60,'DOWN_TAR:',15);DC48(240,60,'213',15);PL(0,120,320,120,15);\r\n")
+    elif target_up == 321 and target_down == 213:
+        LCD_uart.write("CLR(0);SBC(3);DIR(1);DC48(5,5,'UP_TAR:',15);DC48(240,5,'321',15);DC48(5,60,'DOWN_TAR:',15);DC48(240,60,'213',15);PL(0,120,320,120,15);\r\n")
+
+    elif target_up == 123 and target_down == 231:
+        LCD_uart.write("CLR(0);SBC(3);DIR(1);DC48(5,5,'UP_TAR:',15);DC48(240,5,'123',15);DC48(5,60,'DOWN_TAR:',15);DC48(240,60,'231',15);PL(0,120,320,120,15);\r\n")
+    elif target_up == 132 and target_down == 231:
+        LCD_uart.write("CLR(0);SBC(3);DIR(1);DC48(5,5,'UP_TAR:',15);DC48(240,5,'132',15);DC48(5,60,'DOWN_TAR:',15);DC48(240,60,'231',15);PL(0,120,320,120,15);\r\n")
+    elif target_up == 213 and target_down == 231:
+        LCD_uart.write("CLR(0);SBC(3);DIR(1);DC48(5,5,'UP_TAR:',15);DC48(240,5,'213',15);DC48(5,60,'DOWN_TAR:',15);DC48(240,60,'231',15);PL(0,120,320,120,15);\r\n")
+    elif target_up == 231 and target_down == 231:
+        LCD_uart.write("CLR(0);SBC(3);DIR(1);DC48(5,5,'UP_TAR:',15);DC48(240,5,'231',15);DC48(5,60,'DOWN_TAR:',15);DC48(240,60,'231',15);PL(0,120,320,120,15);\r\n")
+    elif target_up == 312 and target_down == 231:
+        LCD_uart.write("CLR(0);SBC(3);DIR(1);DC48(5,5,'UP_TAR:',15);DC48(240,5,'312',15);DC48(5,60,'DOWN_TAR:',15);DC48(240,60,'231',15);PL(0,120,320,120,15);\r\n")
+    elif target_up == 321 and target_down == 231:
+        LCD_uart.write("CLR(0);SBC(3);DIR(1);DC48(5,5,'UP_TAR:',15);DC48(240,5,'321',15);DC48(5,60,'DOWN_TAR:',15);DC48(240,60,'231',15);PL(0,120,320,120,15);\r\n")
+
+    elif target_up == 123 and target_down == 312:
+        LCD_uart.write("CLR(0);SBC(3);DIR(1);DC48(5,5,'UP_TAR:',15);DC48(240,5,'123',15);DC48(5,60,'DOWN_TAR:',15);DC48(240,60,'312',15);PL(0,120,320,120,15);\r\n")
+    elif target_up == 132 and target_down == 312:
+        LCD_uart.write("CLR(0);SBC(3);DIR(1);DC48(5,5,'UP_TAR:',15);DC48(240,5,'132',15);DC48(5,60,'DOWN_TAR:',15);DC48(240,60,'312',15);PL(0,120,320,120,15);\r\n")
+    elif target_up == 213 and target_down == 312:
+        LCD_uart.write("CLR(0);SBC(3);DIR(1);DC48(5,5,'UP_TAR:',15);DC48(240,5,'213',15);DC48(5,60,'DOWN_TAR:',15);DC48(240,60,'312',15);PL(0,120,320,120,15);\r\n")
+    elif target_up == 231 and target_down == 312:
+        LCD_uart.write("CLR(0);SBC(3);DIR(1);DC48(5,5,'UP_TAR:',15);DC48(240,5,'231',15);DC48(5,60,'DOWN_TAR:',15);DC48(240,60,'312',15);PL(0,120,320,120,15);\r\n")
+    elif target_up == 312 and target_down == 312:
+        LCD_uart.write("CLR(0);SBC(3);DIR(1);DC48(5,5,'UP_TAR:',15);DC48(240,5,'312',15);DC48(5,60,'DOWN_TAR:',15);DC48(240,60,'312',15);PL(0,120,320,120,15);\r\n")
+    elif target_up == 321 and target_down == 312:
+        LCD_uart.write("CLR(0);SBC(3);DIR(1);DC48(5,5,'UP_TAR:',15);DC48(240,5,'321',15);DC48(5,60,'DOWN_TAR:',15);DC48(240,60,'312',15);PL(0,120,320,120,15);\r\n")
+
+    elif target_up == 123 and target_down == 321:
+        LCD_uart.write("CLR(0);SBC(3);DIR(1);DC48(5,5,'UP_TAR:',15);DC48(240,5,'123',15);DC48(5,60,'DOWN_TAR:',15);DC48(240,60,'321',15);PL(0,120,320,120,15);\r\n")
+    elif target_up == 132 and target_down == 321:
+        LCD_uart.write("CLR(0);SBC(3);DIR(1);DC48(5,5,'UP_TAR:',15);DC48(240,5,'132',15);DC48(5,60,'DOWN_TAR:',15);DC48(240,60,'321',15);PL(0,120,320,120,15);\r\n")
+    elif target_up == 213 and target_down == 321:
+        LCD_uart.write("CLR(0);SBC(3);DIR(1);DC48(5,5,'UP_TAR:',15);DC48(240,5,'213',15);DC48(5,60,'DOWN_TAR:',15);DC48(240,60,'321',15);PL(0,120,320,120,15);\r\n")
+    elif target_up == 231 and target_down == 321:
+        LCD_uart.write("CLR(0);SBC(3);DIR(1);DC48(5,5,'UP_TAR:',15);DC48(240,5,'231',15);DC48(5,60,'DOWN_TAR:',15);DC48(240,60,'321',15);PL(0,120,320,120,15);\r\n")
+    elif target_up == 312 and target_down == 321:
+        LCD_uart.write("CLR(0);SBC(3);DIR(1);DC48(5,5,'UP_TAR:',15);DC48(240,5,'312',15);DC48(5,60,'DOWN_TAR:',15);DC48(240,60,'321',15);PL(0,120,320,120,15);\r\n")
+    elif target_up == 321 and target_down == 321:
+        LCD_uart.write("CLR(0);SBC(3);DIR(1);DC48(5,5,'UP_TAR:',15);DC48(240,5,'321',15);DC48(5,60,'DOWN_TAR:',15);DC48(240,60,'321',15);PL(0,120,320,120,15);\r\n")
 
 
 

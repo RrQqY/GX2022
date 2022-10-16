@@ -46,10 +46,10 @@ void turn1()
   delay_ms(800);
 
   order_pi(3);
-  delay_ms(39000);
+  delay_ms(35000);
 
   left(1);
-  delay_ms(800);
+  delay_ms(400);
 
   forward(1);
   delay_ms(800);
@@ -67,7 +67,7 @@ void turn1()
   delay_ms(40000);
 
   order_pi(5);
-  delay_ms(45000);
+  delay_ms(43000);
 
   right(1);
   delay_ms(800);

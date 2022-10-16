@@ -120,6 +120,11 @@ void forward(int line_count)
       if ((seven_left(4) == LOW) && (seven_right(4) == LOW)) {                      // 检测到白色背景，开启计数准备
         flag = 1;
       }
+
+      if ((flag == 1) && ((seven_left(7) == HIGH) && (seven_right(1) == HIGH))) {   // 前部七路检测到黑线，先减速
+        move_pid(forward_speed_slow, forward_speed_slow, forward_speed_slow, forward_speed_slow);
+      }
+
       if ((flag == 1) && ((seven_left(4) == HIGH) && (seven_right(4) == HIGH))) {   // 由白色变为黑色线，计数一次
         delay_ms(10);
         if ((flag == 1) && ((seven_left(4) == HIGH) && (seven_right(4) == HIGH))) {   // 由白色变为黑色线，计数一次
@@ -127,6 +132,7 @@ void forward(int line_count)
   //        Serial.println(temp_count);                 
           flag = 0;
           if(temp_count < line_count){
+            move_pid(forward_speed, forward_speed, forward_speed, forward_speed);
             delay_ms(500);        // 先走一段，跨过黑线
           }
         }
@@ -165,6 +171,11 @@ void back(int line_count)
       if ((seven_left(4) == LOW) && (seven_right(4) == LOW)) {                      // 检测到白色背景，开启计数准备
         flag = 1;
       }
+
+      if ((flag == 1) && ((seven_left(1) == HIGH) && (seven_right(7) == HIGH))) {   // 前部七路检测到黑线，先减速
+        move_pid(-back_speed_slow, -back_speed_slow, -back_speed_slow, -back_speed_slow);
+      }
+
       if ((flag == 1) && ((seven_left(4) == HIGH) && (seven_right(4) == HIGH))) {   // 由白色变为黑色线，计数一次
         delay_ms(20);
         if ((flag == 1) && ((seven_left(4) == HIGH) && (seven_right(4) == HIGH))) {   // 由白色变为黑色线，计数一次
@@ -172,6 +183,7 @@ void back(int line_count)
   //        Serial.println(temp_count);                 
           flag = 0;
           if(temp_count < line_count){
+            move_pid(-back_speed, -back_speed, -back_speed, -back_speed);
             delay_ms(500);        // 先走一段，跨过黑线
           }
         }
@@ -218,6 +230,11 @@ void left(int line_count)
       if ((seven_front(4) == LOW) && (seven_back(4) == LOW)) {                      // 检测到白色背景，开启计数准备
         flag = 1;
       }
+
+      if ((flag == 1) && ((seven_front(1) == HIGH) && (seven_back(7) == HIGH))) {   // 前部七路检测到黑线，先减速
+        move_pid(-left_speed_slow, left_speed_slow, left_speed_slow, -left_speed_slow);
+      }
+
       if ((flag == 1) && ((seven_front(4) == HIGH) && (seven_back(4) == HIGH))) {   // 由白色变为黑色线，计数一次
         delay_ms(20);
         if ((flag == 1) && ((seven_front(4) == HIGH) && (seven_back(4) == HIGH))) {   // 由白色变为黑色线，计数一次
@@ -225,6 +242,7 @@ void left(int line_count)
   //        Serial.println(temp_count);                 
           flag = 0;
           if(temp_count < line_count){
+            move_pid(-left_speed, left_speed, left_speed, -left_speed);
             delay_ms(500);        // 先走一段，跨过黑线
           }
         }
@@ -261,6 +279,11 @@ void right(int line_count)
       if ((seven_front(4) == LOW) && (seven_back(4) == LOW)) {                      // 检测到白色背景，开启计数准备
         flag = 1;
       }
+
+      if ((flag == 1) && ((seven_front(7) == HIGH) && (seven_back(1) == HIGH))) {   // 前部七路检测到黑线，先减速
+        move_pid(right_speed_slow, -right_speed_slow, -right_speed_slow, right_speed_slow);
+      }
+
       if ((flag == 1) && ((seven_front(4) == HIGH) && (seven_back(4) == HIGH))) {   // 由白色变为黑色线，计数一次
         delay_ms(20);
         if ((flag == 1) && ((seven_front(4) == HIGH) && (seven_back(4) == HIGH))) {   // 由白色变为黑色线，计数一次
@@ -268,6 +291,7 @@ void right(int line_count)
   //        Serial.println(temp_count);                 
           flag = 0;
           if(temp_count < line_count){
+            move_pid(right_speed, -right_speed, -right_speed, right_speed);
             delay_ms(500);        // 先走一段，跨过黑线
           }
         }

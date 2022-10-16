@@ -24,9 +24,9 @@ green_block_x=2
 blue_block_x=3
 
 # 颜色阈值(L Min, L Max, A Min, A Max, B Min, B Max)
-thresholds = [(0, 83, 27, 127, -128, 127),      # 红色阈值
-              (13, 93, -128, -40, -128, 127),    # 绿色阈值
-              (0, 100, -128, 127, -128, -27)]     # 蓝色阈值
+thresholds = [(0, 83, 45, 127, -128, 127),      # 红色阈值
+              (13, 93, -128, -45, -128, 127),    # 绿色阈值
+              (0, 100, -128, 127, -128, -40)]     # 蓝色阈值
 
 #################### Openmv数据处理 ###################
 # 直接向arduino发送处理好的数据
@@ -87,19 +87,19 @@ while(True):
         img = sensor.snapshot()
 
         # 识别下层物料顺序
-        for r in img.find_blobs([thresholds[0]],roi=[0,140,320,100],pixels_threshold=200, area_threshold=200, merge=True):
+        for r in img.find_blobs([thresholds[0]],roi=[0,120,320,240],pixels_threshold=200, area_threshold=200, merge=True):
             img.draw_rectangle(r.rect())
             img.draw_cross(r.cx(), r.cy())
             img.draw_keypoints([(r.cx(), r.cy(), int(math.degrees(r.rotation())))], size=20)
             red_block_x = r.cx()
 
-        for g in img.find_blobs([thresholds[1]],roi=[0,140,320,100], pixels_threshold=200, area_threshold=200, merge=True):
+        for g in img.find_blobs([thresholds[1]],roi=[0,120,320,240], pixels_threshold=200, area_threshold=200, merge=True):
             img.draw_rectangle(g.rect())
             img.draw_cross(g.cx(), g.cy())
             img.draw_keypoints([(g.cx(), g.cy(), int(math.degrees(g.rotation())))], size=20)
             green_block_x = g.cx()
 
-        for b in img.find_blobs([thresholds[2]],roi=[0,140,320,100], pixels_threshold=200, area_threshold=200, merge=True):
+        for b in img.find_blobs([thresholds[2]],roi=[0,120,320,240], pixels_threshold=200, area_threshold=200, merge=True):
             img.draw_rectangle(b.rect())
             img.draw_cross(b.cx(), b.cy())
             img.draw_keypoints([(b.cx(), b.cy(), int(math.degrees(b.rotation())))], size=20)
@@ -126,7 +126,7 @@ while(True):
             elif int(green_block_x)<int(blue_block_x) and int(blue_block_x)<int(red_block_x):
                 if Border!=231:
                     #print("上层物料顺序为：绿蓝红")
-                    # print(red_block_x,green_block_x,blue_block_x)
+                     #print(red_block_x,green_block_x,blue_block_x)
                     #print(blob.h(),blob.w() )
                     Border=231
             elif int(blue_block_x)<int(red_block_x) and int(red_block_x)<int(green_block_x):

@@ -58,7 +58,7 @@ class servoActions():
     prepare_1 = [[0 for i in range(5)] for j in range(1)]             
     prepare_1 = [[1, 0, 90, -30, -85]]
     def Servo_prepare_1(self):
-        self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.prepare_1[0][0],velocity=50.0, t_acc=100, t_dec=100)
+        self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.prepare_1[0][0],velocity=150.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_1, servoActions.prepare_1[0][1],velocity=100.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_2, servoActions.prepare_1[0][2],velocity=100.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_3, servoActions.prepare_1[0][3],velocity=200.0, t_acc=100, t_dec=100)
@@ -70,7 +70,7 @@ class servoActions():
     prepare_0 = [[0 for i in range(5)] for j in range(1)]             
     prepare_0 = [[0, 0, 90, -30, -85]]
     def Servo_prepare_0(self):
-        self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.prepare_0[0][0],velocity=50.0, t_acc=100, t_dec=100)
+        self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.prepare_0[0][0],velocity=150.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_1, servoActions.prepare_0[0][1],velocity=100.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_2, servoActions.prepare_0[0][2],velocity=100.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_3, servoActions.prepare_0[0][3],velocity=200.0, t_acc=100, t_dec=100)
@@ -82,7 +82,7 @@ class servoActions():
     prepare = [[0 for i in range(5)] for j in range(1)]             
     prepare = [[0, 0, 90, -30, -85]]
     def Servo_prepare(self):
-        self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.prepare[0][0],velocity=50.0, t_acc=100, t_dec=100)
+        self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.prepare[0][0],velocity=150.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_1, servoActions.prepare[0][1],velocity=100.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_2, servoActions.prepare[0][2],velocity=100.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_3, servoActions.prepare[0][3],velocity=200.0, t_acc=100, t_dec=100)
@@ -95,12 +95,12 @@ class servoActions():
     pla1_pos2_up_get = [[0 for i in range(5)] for j in range(4)]      # 抓取货架①上层位置二
     pla1_pos3_up_get = [[0 for i in range(5)] for j in range(4)]      # 抓取货架①上层位置三
     pla1_pos1_up_get = [[66, 8, 120, 20, -85],       # 准备
-                        [66, -51, 38, 0, -85],       # 伸到物块前
-                        [66, -51, 38, 0, -110],      # 抓
+                        [66, -50, 38, 0, -85],       # 伸到物块前
+                        [66, -50, 38, 0, -110],      # 抓
                         [66, 8, 80, -70, -110]]      # 抓回到准备位置
     # 抓取货架①（场地下方）上层位置1
     def Get_pla1_pos1_up(self):
-        self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.pla1_pos1_up_get[0][0],velocity=50.0, t_acc=100, t_dec=100)
+        self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.pla1_pos1_up_get[0][0],velocity=150.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_1, servoActions.pla1_pos1_up_get[0][1],velocity=100.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_2, servoActions.pla1_pos1_up_get[0][2],velocity=100.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_3, servoActions.pla1_pos1_up_get[0][3],velocity=200.0, t_acc=100, t_dec=100)
@@ -131,12 +131,12 @@ class servoActions():
 
 
     pla1_pos2_up_get = [[90, 8, 120, 20, -85],
-                        [90, -38, 61, 7, -85],
-                        [90, -38, 61, 7, -110],
+                        [90, -37, 61, 7, -85],
+                        [90, -37, 61, 7, -110],
                         [90, 8, 80, -70, -110]]
     # 抓取货架①（场地下方）上层位置2
     def Get_pla1_pos2_up(self):
-        self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.pla1_pos2_up_get[0][0],velocity=50.0, t_acc=100, t_dec=100)
+        self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.pla1_pos2_up_get[0][0],velocity=150.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_1, servoActions.pla1_pos2_up_get[0][1],velocity=100.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_2, servoActions.pla1_pos2_up_get[0][2],velocity=100.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_3, servoActions.pla1_pos2_up_get[0][3],velocity=200.0, t_acc=100, t_dec=100)
@@ -167,12 +167,12 @@ class servoActions():
 
 
     pla1_pos3_up_get = [[114, 8, 120, 20, -85],
-                        [114, -51, 38, 0, -85],
-                        [114, -51, 38, 0, -110],
+                        [114, -50, 38, 0, -85],
+                        [114, -50, 38, 0, -110],
                         [114, 8, 80, -70, -110]]
     # 抓取货架①（场地下方）上层位置3
     def Get_pla1_pos3_up(self):
-        self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.pla1_pos3_up_get[0][0],velocity=50.0, t_acc=100, t_dec=100)
+        self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.pla1_pos3_up_get[0][0],velocity=150.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_1, servoActions.pla1_pos3_up_get[0][1],velocity=100.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_2, servoActions.pla1_pos3_up_get[0][2],velocity=100.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_3, servoActions.pla1_pos3_up_get[0][3],velocity=200.0, t_acc=100, t_dec=100)
@@ -212,7 +212,7 @@ class servoActions():
                           [65, -24, 135, 52, -112]]      # 抓回到准备位置
     # 抓取货架①（场地下方）下层位置1
     def Get_pla1_pos1_down(self):
-        self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.pla1_pos1_down_get[0][0],velocity=50.0, t_acc=100, t_dec=100)
+        self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.pla1_pos1_down_get[0][0],velocity=150.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_1, servoActions.pla1_pos1_down_get[0][1],velocity=30.0, t_acc=600, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_2, servoActions.pla1_pos1_down_get[0][2],velocity=50.0, t_acc=600, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_3, servoActions.pla1_pos1_down_get[0][3],velocity=100.0, t_acc=10, t_dec=100)
@@ -248,7 +248,7 @@ class servoActions():
                           [90, -18, 135, 52, -112]]
     # 抓取货架①（场地下方）下层位置2
     def Get_pla1_pos2_down(self):
-        self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.pla1_pos2_down_get[0][0],velocity=50.0, t_acc=100, t_dec=100)
+        self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.pla1_pos2_down_get[0][0],velocity=150.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_1, servoActions.pla1_pos2_down_get[0][1],velocity=30.0, t_acc=600, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_2, servoActions.pla1_pos2_down_get[0][2],velocity=50.0, t_acc=600, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_3, servoActions.pla1_pos2_down_get[0][3],velocity=100.0, t_acc=10, t_dec=100)
@@ -284,7 +284,7 @@ class servoActions():
                           [114, -24, 135, 52, -112]]
     # 抓取货架①（场地下方）下层位置3
     def Get_pla1_pos3_down(self):
-        self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.pla1_pos3_down_get[0][0],velocity=50.0, t_acc=100, t_dec=100)
+        self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.pla1_pos3_down_get[0][0],velocity=150.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_1, servoActions.pla1_pos3_down_get[0][1],velocity=30.0, t_acc=600, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_2, servoActions.pla1_pos3_down_get[0][2],velocity=50.0, t_acc=600, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_3, servoActions.pla1_pos3_down_get[0][3],velocity=100.0, t_acc=10, t_dec=100)
@@ -513,7 +513,7 @@ class servoActions():
         self.uservo.set_servo_angle(self.SERVO_ID_3, servoActions.pla2_pos2_get[1][3],velocity=150.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_5, servoActions.pla2_pos2_get[1][4],velocity=100.0, t_acc=100, t_dec=100)
         # self.uservo.wait()
-        time.sleep(4.2)
+        time.sleep(3)
         self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.pla2_pos2_get[2][0],velocity=50.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_1, servoActions.pla2_pos2_get[2][1],velocity=50.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_2, servoActions.pla2_pos2_get[2][2],velocity=200.0, t_acc=100, t_dec=100)
@@ -556,7 +556,7 @@ class servoActions():
         self.uservo.set_servo_angle(self.SERVO_ID_3, servoActions.pla2_pos3_get[1][3],velocity=150.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_5, servoActions.pla2_pos3_get[1][4],velocity=100.0, t_acc=100, t_dec=100)
         # self.uservo.wait()
-        time.sleep(4.2)
+        time.sleep(3)
         self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.pla2_pos3_get[2][0],velocity=50.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_1, servoActions.pla2_pos3_get[2][1],velocity=50.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_2, servoActions.pla2_pos3_get[2][2],velocity=200.0, t_acc=100, t_dec=100)
@@ -603,7 +603,7 @@ class servoActions():
         self.uservo.set_servo_angle(self.SERVO_ID_3, servoActions.pla3_pos1_down_put[1][3],velocity=250.0, t_acc=50, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_5, servoActions.pla3_pos1_down_put[1][4],velocity=100.0, t_acc=100, t_dec=100)
         # self.uservo.wait()
-        time.sleep(4.2)
+        time.sleep(3)
         self.uservo.set_servo_angle(self.SERVO_ID_0, servoActions.pla3_pos1_down_put[2][0],velocity=100.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_1, servoActions.pla3_pos1_down_put[2][1],velocity=130.0, t_acc=100, t_dec=100)
         self.uservo.set_servo_angle(self.SERVO_ID_2, servoActions.pla3_pos1_down_put[2][2],velocity=200.0, t_acc=100, t_dec=100)
