@@ -1131,11 +1131,9 @@ void forward_align_ls()
 
     while (1) {   
       if ((seven_left(1) == HIGH) || (seven_left(2) == HIGH) || (seven_left(3) == HIGH)) {   // 由白色变为黑色线，计数一次
-        if (seven_left(4) == HIGH) {   // 由白色变为黑色线，计数一次     
-  //        Serial.println(temp_count);   
+        if (seven_left(4) == HIGH) {   // 由白色变为黑色线，计数一次       
           delay_ms(50);              
-          if (seven_left(4) == HIGH) {   // 由白色变为黑色线，计数一次     
-  //        Serial.println(temp_count);                 
+          if (seven_left(4) == HIGH) {   // 由白色变为黑色线，计数一次                   
             brake();
             return;
           }
@@ -1144,17 +1142,19 @@ void forward_align_ls()
         PID_back(0);
       }
       else if ((seven_left(5) == HIGH) || (seven_left(6) == HIGH) || (seven_left(7) == HIGH)) {   // 由白色变为黑色线，计数一次
-        if (seven_left(4) == HIGH) {   // 由白色变为黑色线，计数一次     
-  //        Serial.println(temp_count);                 
+        if (seven_left(4) == HIGH) {   // 由白色变为黑色线，计数一次                 
           delay_ms(50);              
-          if (seven_left(4) == HIGH) {   // 由白色变为黑色线，计数一次     
-  //        Serial.println(temp_count);                 
+          if (seven_left(4) == HIGH) {   // 由白色变为黑色线，计数一次                 
             brake();
             return;
           }
         }
         move_pid(forward_speed_slow, forward_speed_slow, forward_speed_slow, forward_speed_slow);
         PID_forward(0);
+      }
+      else {
+        brake();
+        return;
       }
     }
 }
@@ -1194,6 +1194,10 @@ void forward_align_rs()
         }
         move_pid(-back_speed_slow, -back_speed_slow, -back_speed_slow, -back_speed_slow);
         PID_back(0);
+      }
+      else {
+        brake();
+        return;
       }
     }
 }

@@ -398,51 +398,125 @@ def order5():
 
 
 # 任务6：放下货物④（场地上方）下层位置
-def order6(target_up):
+def order6(seq_up, target_up):
     print("@ Start order 6")
+
+    if (seq_up == 123) and (target_up == 123):
+        seq = 123
+    elif (seq_up == 123) and (target_up == 132):
+        seq = 132
+    elif (seq_up == 123) and (target_up == 213):
+        seq = 213
+    elif (seq_up == 123) and (target_up == 231):
+        seq = 321
+    elif (seq_up == 123) and (target_up == 312):
+        seq = 312
+    elif (seq_up == 123) and (target_up == 321):
+        seq = 321
+    elif (seq_up == 132) and (target_up == 123):
+        seq = 132
+    elif (seq_up == 132) and (target_up == 132):
+        seq = 123
+    elif (seq_up == 132) and (target_up == 213):
+        seq = 231
+    elif (seq_up == 132) and (target_up == 231):
+        seq = 213
+    elif (seq_up == 132) and (target_up == 312):
+        seq = 321
+    elif (seq_up == 132) and (target_up == 321):
+        seq = 312
+    elif (seq_up == 213) and (target_up == 123):
+        seq = 213
+    elif (seq_up == 213) and (target_up == 132):
+        seq = 312
+    elif (seq_up == 213) and (target_up == 213):
+        seq = 123
+    elif (seq_up == 213) and (target_up == 231):
+        seq = 321
+    elif (seq_up == 213) and (target_up == 312):
+        seq = 132
+    elif (seq_up == 213) and (target_up == 321):
+        seq = 231
+    elif (seq_up == 231) and (target_up == 123):
+        seq = 231
+    elif (seq_up == 231) and (target_up == 132):
+        seq = 321
+    elif (seq_up == 231) and (target_up == 213):
+        seq = 132
+    elif (seq_up == 231) and (target_up == 231):
+        seq = 312
+    elif (seq_up == 231) and (target_up == 312):
+        seq = 123
+    elif (seq_up == 231) and (target_up == 321):
+        seq = 213
+    elif (seq_up == 312) and (target_up == 123):
+        seq = 312
+    elif (seq_up == 312) and (target_up == 132):
+        seq = 213
+    elif (seq_up == 312) and (target_up == 213):
+        seq = 321
+    elif (seq_up == 312) and (target_up == 231):
+        seq = 123
+    elif (seq_up == 312) and (target_up == 312):
+        seq = 231
+    elif (seq_up == 312) and (target_up == 321):
+        seq = 132
+    elif (seq_up == 321) and (target_up == 123):
+        seq = 321
+    elif (seq_up == 321) and (target_up == 132):
+        seq = 231
+    elif (seq_up == 321) and (target_up == 213):
+        seq = 312
+    elif (seq_up == 321) and (target_up == 231):
+        seq = 132
+    elif (seq_up == 321) and (target_up == 312):
+        seq = 213
+    elif (seq_up == 321) and (target_up == 321):
+        seq = 123
+
     # 从右往左放置（红绿蓝）
-    if target_up == 123:
-        servo.Depo_left_out()
-        servo.Put_pla3_pos1_down()
-        servo.Depo_middle_out()
-        servo.Put_pla3_pos2_down()
-        servo.Depo_right_out()
-        servo.Put_pla3_pos3_down()
-    elif target_up == 132:
-        servo.Depo_left_out()
-        servo.Put_pla3_pos1_down()
-        servo.Depo_right_out()
-        servo.Put_pla3_pos3_down()
-        servo.Depo_middle_out()
-        servo.Put_pla3_pos2_down()
-    elif target_up == 213:
-        servo.Depo_middle_out()
-        servo.Put_pla3_pos2_down()
-        servo.Depo_left_out()
-        servo.Put_pla3_pos1_down()
-        servo.Depo_right_out()
-        servo.Put_pla3_pos3_down()
-    elif target_up == 231:
-        servo.Depo_middle_out()
-        servo.Put_pla3_pos2_down()
-        servo.Depo_right_out()
-        servo.Put_pla3_pos3_down()
-        servo.Depo_left_out()
-        servo.Put_pla3_pos1_down()
-    elif target_up == 312:
-        servo.Depo_right_out()
-        servo.Put_pla3_pos3_down()
-        servo.Depo_left_out()
-        servo.Put_pla3_pos1_down()
-        servo.Depo_middle_out()
-        servo.Put_pla3_pos2_down()
-    elif target_up == 321:
+    if seq == 123:          # RGB
         servo.Depo_right_out()
         servo.Put_pla3_pos3_down()
         servo.Depo_middle_out()
         servo.Put_pla3_pos2_down()
         servo.Depo_left_out()
         servo.Put_pla3_pos1_down()
+    elif seq == 132:        # RBG
+        servo.Depo_right_out()
+        servo.Put_pla3_pos3_down()
+        servo.Depo_middle_out()
+        servo.Put_pla3_pos2_down()
+        servo.Depo_left_out()
+        servo.Put_pla3_pos1_down()
+    elif seq == 213:        # GRB
+        servo.Depo_middle_out()
+        servo.Put_pla3_pos2_down()
+        servo.Depo_right_out()
+        servo.Put_pla3_pos3_down()
+        servo.Depo_left_out()
+        servo.Put_pla3_pos1_down()
+    elif seq == 231:        # GBR
+        servo.Depo_middle_out()
+        servo.Put_pla3_pos2_down()
+        servo.Depo_left_out()
+        servo.Put_pla3_pos1_down()
+        servo.Depo_right_out()
+        servo.Put_pla3_pos3_down()
+    elif seq == 312:        # BRG
+        servo.Depo_left_out()
+        servo.Put_pla3_pos1_down()
+        servo.Depo_right_out()
+        servo.Put_pla3_pos3_down()
+        servo.Depo_middle_out()
+        servo.Put_pla3_pos2_down()
+    elif seq == 321:        # BGR
+        servo.Depo_left_out()
+        servo.Put_pla3_pos1_down()
+        servo.Depo_middle_out()
+        servo.Put_pla3_pos2_down()
+        servo.Depo_right_out()
+        servo.Put_pla3_pos3_down()
 
 
 # 任务7：抓取货物⑤（场地下方）下层位置
@@ -492,51 +566,125 @@ def order7(seq_down, target_down):
         judge_color_down(target_down, 1)
 
 # 任务8：抓取货物⑥（场地上方）上层位置
-def order8(target_down):
+def order8(seq_down, target_down):
     print("@ Start order 8")
+
+    if (seq_down == 123) and (target_down == 123):
+        seq = 123
+    elif (seq_down == 123) and (target_down == 132):
+        seq = 132
+    elif (seq_down == 123) and (target_down == 213):
+        seq = 213
+    elif (seq_down == 123) and (target_down == 231):
+        seq = 321
+    elif (seq_down == 123) and (target_down == 312):
+        seq = 312
+    elif (seq_down == 123) and (target_down == 321):
+        seq = 321
+    elif (seq_down == 132) and (target_down == 123):
+        seq = 132
+    elif (seq_down == 132) and (target_down == 132):
+        seq = 123
+    elif (seq_down == 132) and (target_down == 213):
+        seq = 231
+    elif (seq_down == 132) and (target_down == 231):
+        seq = 213
+    elif (seq_down == 132) and (target_down == 312):
+        seq = 321
+    elif (seq_down == 132) and (target_down == 321):
+        seq = 312
+    elif (seq_down == 213) and (target_down == 123):
+        seq = 213
+    elif (seq_down == 213) and (target_down == 132):
+        seq = 312
+    elif (seq_down == 213) and (target_down == 213):
+        seq = 123
+    elif (seq_down == 213) and (target_down == 231):
+        seq = 321
+    elif (seq_down == 213) and (target_down == 312):
+        seq = 132
+    elif (seq_down == 213) and (target_down == 321):
+        seq = 231
+    elif (seq_down == 231) and (target_down == 123):
+        seq = 231
+    elif (seq_down == 231) and (target_down == 132):
+        seq = 321
+    elif (seq_down == 231) and (target_down == 213):
+        seq = 132
+    elif (seq_down == 231) and (target_down == 231):
+        seq = 312
+    elif (seq_down == 231) and (target_down == 312):
+        seq = 123
+    elif (seq_down == 231) and (target_down == 321):
+        seq = 213
+    elif (seq_down == 312) and (target_down == 123):
+        seq = 312
+    elif (seq_down == 312) and (target_down == 132):
+        seq = 213
+    elif (seq_down == 312) and (target_down == 213):
+        seq = 321
+    elif (seq_down == 312) and (target_down == 231):
+        seq = 123
+    elif (seq_down == 312) and (target_down == 312):
+        seq = 231
+    elif (seq_down == 312) and (target_down == 321):
+        seq = 132
+    elif (seq_down == 321) and (target_down == 123):
+        seq = 321
+    elif (seq_down == 321) and (target_down == 132):
+        seq = 231
+    elif (seq_down == 321) and (target_down == 213):
+        seq = 312
+    elif (seq_down == 321) and (target_down == 231):
+        seq = 132
+    elif (seq_down == 321) and (target_down == 312):
+        seq = 213
+    elif (seq_down == 321) and (target_down == 321):
+        seq = 123
+
     # 从右往左放置（红绿蓝）
-    if target_down == 123:
-        servo.Depo_left_out()
-        servo.Put_pla3_pos1_up()
-        servo.Depo_middle_out()
-        servo.Put_pla3_pos2_up()
-        servo.Depo_right_out()
-        servo.Put_pla3_pos3_up()
-    elif target_down == 132:
-        servo.Depo_left_out()
-        servo.Put_pla3_pos1_up()
-        servo.Depo_right_out()
-        servo.Put_pla3_pos3_up()
-        servo.Depo_middle_out()
-        servo.Put_pla3_pos2_up()
-    elif target_down == 213:
-        servo.Depo_middle_out()
-        servo.Put_pla3_pos2_up()
-        servo.Depo_left_out()
-        servo.Put_pla3_pos1_up()
-        servo.Depo_right_out()
-        servo.Put_pla3_pos3_up()
-    elif target_down == 231:
-        servo.Depo_middle_out()
-        servo.Put_pla3_pos2_up()
-        servo.Depo_right_out()
-        servo.Put_pla3_pos3_up()
-        servo.Depo_left_out()
-        servo.Put_pla3_pos1_up()
-    elif target_down == 312:
-        servo.Depo_right_out()
-        servo.Put_pla3_pos3_up()
-        servo.Depo_left_out()
-        servo.Put_pla3_pos1_up()
-        servo.Depo_middle_out()
-        servo.Put_pla3_pos2_up()
-    elif target_down == 321:
+    if seq == 123:          # RGB
         servo.Depo_right_out()
         servo.Put_pla3_pos3_up()
         servo.Depo_middle_out()
         servo.Put_pla3_pos2_up()
         servo.Depo_left_out()
         servo.Put_pla3_pos1_up()
+    elif seq == 132:        # RBG
+        servo.Depo_right_out()
+        servo.Put_pla3_pos3_up()
+        servo.Depo_middle_out()
+        servo.Put_pla3_pos2_up()
+        servo.Depo_left_out()
+        servo.Put_pla3_pos1_up()
+    elif seq == 213:        # GRB
+        servo.Depo_middle_out()
+        servo.Put_pla3_pos2_up()
+        servo.Depo_right_out()
+        servo.Put_pla3_pos3_up()
+        servo.Depo_left_out()
+        servo.Put_pla3_pos1_up()
+    elif seq == 231:        # GBR
+        servo.Depo_middle_out()
+        servo.Put_pla3_pos2_up()
+        servo.Depo_left_out()
+        servo.Put_pla3_pos1_up()
+        servo.Depo_right_out()
+        servo.Put_pla3_pos3_up()
+    elif seq == 312:        # BRG
+        servo.Depo_left_out()
+        servo.Put_pla3_pos1_up()
+        servo.Depo_right_out()
+        servo.Put_pla3_pos3_up()
+        servo.Depo_middle_out()
+        servo.Put_pla3_pos2_up()
+    elif seq == 321:        # BGR
+        servo.Depo_left_out()
+        servo.Put_pla3_pos1_up()
+        servo.Depo_middle_out()
+        servo.Put_pla3_pos2_up()
+        servo.Depo_right_out()
+        servo.Put_pla3_pos3_up()
 
 
 
@@ -547,7 +695,9 @@ def main():
     while True:
         # 从下位机获取指令
         order = get_order()
-        # order = 2
+        # order = 8
+        # target_up = 231
+        # target_down = 312
 
         # 开始执行指令（拍摄）
         if order == 1:
@@ -568,13 +718,13 @@ def main():
             order5()
             servo.Servo_prepare()
         elif order == 6:
-            order6(target_up)
+            order6(seq_up, target_up)
             servo.Servo_prepare()
         elif order == 7:
             order7(seq_down, target_down)
             servo.Servo_prepare()
         elif order == 8:
-            order8(target_down)
+            order8(seq_down, target_down)
             servo.Servo_prepare()
 
         # 必要的软件延时
