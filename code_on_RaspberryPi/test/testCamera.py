@@ -3,82 +3,87 @@
 import cv2
 import numpy as np
 
-ball_color = 'red'
 
-color_dist = {'red': {'Lower': np.array([0, 50, 50]), 'Upper': np.array([6, 255, 255])},
-              'blue': {'Lower': np.array([100, 80, 46]), 'Upper': np.array([124, 255, 255])},
-              'green': {'Lower': np.array([35, 43, 35]), 'Upper': np.array([90, 255, 255])},
-              }
+def get_obj_pos(img, color):
+    img = cv2.erode(img, None, iterations=2)
+    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    mask = cv2.inRange(hsv, color_dist[color]['Lower'], color_dist[color]['Upper'])
+    square = np.sum(mask)
+    print(square)
+    res = cv2.bitwise_and(img, img, mask=mask)
+    gray = cv2.cvtColor(res, cv2.COLOR_BGR2GRAY)
+    ret, binary = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY)
+    contours, hierarchy = cv2.findContours(binary, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
+    if (len(contours) > 0) and (square > 1600):
+        c = max(contours, key=cv2.contourArea)
+        x, y, w, h = cv2.boundingRect(c)
+        pos_x = x + w / 2
+        pos_y = y + h / 2
 
-cap = cv2.VideoCapture(0)
-cv2.namedWindow('camera', cv2.WINDOW_AUTOSIZE)
+        if (pos_x > pos_seg_x[1] and pos_x < pos_seg_x[2]) and (pos_y > pos_seg_y[0] and pos_y < pos_seg_y[1]):
+            pos = 1
+        elif (pos_x > pos_seg_x[2] and pos_x < pos_seg_x[3]) and (pos_y > pos_seg_y[0] and pos_y < pos_seg_y[1]):
+            pos = 2
+        elif (pos_x > pos_seg_x[3] and pos_x < pos_seg_x[4]) and (pos_y > pos_seg_y[0] and pos_y < pos_seg_y[1]):
+            pos = 3
+        elif (pos_x > pos_seg_x[1] and pos_x < pos_seg_x[2]) and (pos_y > pos_seg_y[1] and pos_y < pos_seg_y[2]):
+            pos = 4
+        elif (pos_x > pos_seg_x[2] and pos_x < pos_seg_x[3]) and (pos_y > pos_seg_y[1] and pos_y < pos_seg_y[2]):
+            pos = 5
+        elif (pos_x > pos_seg_x[3] and pos_x < pos_seg_x[4]) and (pos_y > pos_seg_y[1] and pos_y < pos_seg_y[2]):
+            pos = 6
+        else :
+            pos = 0
 
-# 设置SimpleBlobDetector参数
-params = cv2.SimpleBlobDetector_Params()
-
-# 改变阈值
-params.minThreshold = 10
-params.maxThreshold = 200
-
-params.filterByColor = True
-
-
-# 根据面积过滤
-params.filterByArea = True
-params.minArea = 500
-
-# 根据Circularity过滤
-params.filterByCircularity = True
-params.minCircularity = 0.1
-
-# 根据Convexity过滤
-params.filterByConvexity = True
-params.minConvexity = 0.87
-
-# 根据Inertia过滤
-params.filterByInertia = True
-params.minInertiaRatio = 0.01
-
-# 创建一个带有参数的检测器
-ver = (cv2.__version__).split('.')
-if int(ver[0]) < 3 :
-	detector = cv2.SimpleBlobDetector(params)
-else : 
-	detector = cv2.SimpleBlobDetector_create(params)
-
-
-while cap.isOpened():
-    ret, frame = cap.read()
-    if frame is not None:
-        # gs_frame = cv2.GaussianBlur(frame, (5, 5), 0)                     # 高斯模糊
-        # hsv = cv2.cvtColor(gs_frame, cv2.COLOR_BGR2HSV)                   # 转化成HSV图像
-        # erode_hsv = cv2.erode(hsv, None, iterations=2)                    # 腐蚀，粗的变细
-        # inRange_hsv = cv2.inRange(erode_hsv, color_dist[ball_color]['Lower'], color_dist[ball_color]['Upper'])
-        # contours, hierarchy = cv2.findContours(inRange_hsv, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-        # cv2.drawContours(inRange_hsv,contours,-1,(0,0,255),10)  
-
-        # cv2.imshow('camera', inRange_hsv)
-        # cv2.waitKey(1)
-
-
-        # 检测blobs
-        keypoints = detector.detect(frame)
-
-        # 用红色圆圈画出检测到的blobs
-        # cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS 确保圆的大小对应于blob的大小
-        im_with_keypoints = cv2.drawKeypoints(frame, keypoints, np.array([]), (0,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
-
-        # 结果显示
-        cv2.imshow("Keypoints", im_with_keypoints)
+        cv2.imshow('res', res)
         cv2.waitKey(1)
-
+        return pos
     else:
-        print("无画面")
- 
-cap.release()
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+        return None
+
+
+if __name__ == '__main__':
+    ball_color = 1
+
+    color_dist = {'red': {'Lower': np.array([0, 50, 50]), 'Upper': np.array([6, 255, 255])},
+                'blue': {'Lower': np.array([100, 80, 46]), 'Upper': np.array([124, 255, 255])},
+                'green': {'Lower': np.array([35, 43, 35]), 'Upper': np.array([90, 255, 255])},
+                }
+
+    pos_seg_x = [0, 213, 427, 640]
+    pos_seg_y = [0, 240, 480]
+
+    cap = cv2.VideoCapture(0)
+
+    while cap.isOpened():
+        ret, frame = cap.read()
+        frame = cv2.erode(frame, None, iterations=2)
+
+        if frame is not None:
+            # 上下图像分割
+            frame_up = frame[0:240, 0:320]
+            frame_down = frame[240:480, 0:320]
+
+            # 获取目标位置
+            pos_red_up = get_obj_pos(frame_up, 'red')
+            print(pos_red_up)
+            # pos_blue_up = get_obj_pos(frame_up, 'blue')
+            # pos_green_up = get_obj_pos(frame_up, 'green')
+            # pos_red_down = get_obj_pos(frame_down, 'red')
+            # pos_blue_down = get_obj_pos(frame_down, 'blue')
+            # pos_green_down = get_obj_pos(frame_down, 'green')
+
+            # # 结果显示
+            # cv2.imshow("Keypoints", im_with_keypoints)
+            # cv2.waitKey(1)
+
+        else:
+            print("无画面")
+    
+    cap.release()
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
 
 
 

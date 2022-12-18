@@ -13,6 +13,7 @@
 void order_pi(int order)
 {
   switch(order){
+    case 0: Serial2.write("0"); delay_ms(50); break;
     case 1: Serial2.write("1"); delay_ms(50); break;
     case 2: Serial2.write("2"); delay_ms(50); break;
     case 3: Serial2.write("3"); delay_ms(50); break;
@@ -21,5 +22,6 @@ void order_pi(int order)
     case 6: Serial2.write("6"); delay_ms(50); break;
     case 7: Serial2.write("7"); delay_ms(50); break;
     case 8: Serial2.write("8"); delay_ms(50); break;
+    case 9: Serial2.write("9"); delay_ms(50); break;
   }  
 }

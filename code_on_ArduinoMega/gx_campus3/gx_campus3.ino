@@ -2,6 +2,7 @@
 #include "gx_campus3.h"
 
 A4950MotorShield motors;
+#define  decay   0.85
 
 
 void setup()
@@ -30,23 +31,29 @@ void setup()
 // 第一次出发
 void turn1()
 {
-  forward(1);
+  // 从基地中斜向移出
+  slant(1);
+  delay_ms(400);
+//  back(0);
+//  delay_ms(400);
+
+  forward_scanCode(1);
   delay_ms(1200);
 
   order_pi(1);
-  delay_ms(1500);
+  delay_ms(2000);
 
-  forward(3);
+  forward(4);
   delay_ms(800);
 
   order_pi(2);
-  delay_ms(1500);
+  delay_ms(3000);
 
   right_to_rs();
   delay_ms(800);
 
   order_pi(3);
-  delay_ms(35000);
+  delay_ms(22000);
 
   left(1);
   delay_ms(400);
@@ -64,10 +71,10 @@ void turn1()
   delay_ms(800);
 
   order_pi(4);
-  delay_ms(40000);
+  delay_ms(20500);
 
   order_pi(5);
-  delay_ms(43000);
+  delay_ms(28000);
 
   right(1);
   delay_ms(800);
@@ -85,7 +92,7 @@ void turn1()
   delay_ms(800);
 
   order_pi(6);
-  delay_ms(42000);
+  delay_ms(26000);
 
   left(1);
   delay_ms(800);
@@ -110,7 +117,7 @@ void turn2()
   delay_ms(800);
 
   order_pi(7);
-  delay_ms(39000);
+  delay_ms(24000);
 
   left(1);
   delay_ms(800);
@@ -128,10 +135,10 @@ void turn2()
   delay_ms(800);
 
   order_pi(4);
-  delay_ms(40000);
+  delay_ms(20500);
 
   order_pi(5);
-  delay_ms(45000);
+  delay_ms(27000);
 
   right(1);
   delay_ms(800);
@@ -149,16 +156,18 @@ void turn2()
   delay_ms(800);
 
   order_pi(8);
-  delay_ms(42000);
+  delay_ms(27000);
 
   left(1);
   delay_ms(800);
 
-  left_turn(90);
-  delay_ms(800);
-
   forward(2);
   delay_ms(800);
+
+  order_pi(9);
+  delay_ms(800);
+
+  slant_end();
 }
 
 
@@ -172,13 +181,15 @@ void prepare()
 // 开始函数
 void start()
 {
-//  forward(1);
+//  move_pid(255, 255, 255, 255);
+//  forward(2);
 //  delay_ms(800);
-//  left(2);
+//  back(2);
 //  delay_ms(800);
 //  forward(1);
 //  delay_ms(800);
 //
+  order_pi(0);
   turn1();
   turn2();
 }

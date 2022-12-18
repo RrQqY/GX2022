@@ -4,7 +4,7 @@
 #include "SunConfig.h"
 #include <FlexiTimer2.h>  //定时中断
 #include <Wire.h>
-#include <JY901.h>
+#include "JY901.h"
 
 #include "move.h"
 #include "gpio.h"

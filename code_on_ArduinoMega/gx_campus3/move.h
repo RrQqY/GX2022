@@ -22,16 +22,22 @@
 #define  SevenPWM_MAX          80
 #define  YawPWM_turn_MAX       8
 
+//#define  YawPWM_MAX            30
+//#define  SevenPWM_MAX          40
+//#define  YawPWM_turn_MAX       4
+
 // 运动速度宏定义
-#define  forward_speed         18
+#define  forward_speed         20
+#define  forward_speed_slant   16
 #define  back_speed            18
 #define  left_speed            16
 #define  right_speed           16
 
-#define  forward_speed_slow    12
+#define  forward_speed_slow    14
+#define  forward_speed_slant_slow  12
 #define  back_speed_slow       12
-#define  left_speed_slow       14
-#define  right_speed_slow      14
+#define  left_speed_slow       12
+#define  right_speed_slow      12
 
 #define  pre_slow_speed        2
 #define  left_turn_speed       13
@@ -77,5 +83,11 @@ extern void left_to_rs();                        // 左移至右七路压线
 extern void left_to_ls();                        // 左移至左七路压线
 extern void forward_align_ls();                  // 直行方向上矫准（用左七路）
 extern void forward_align_rs();                  // 直行方向上矫准（用右七路）
-
+//-----------------------------------------------------------------------------------
+extern void slant(int line_count);               // 出发斜走
+extern void PID_slant(int clear_flag);           // 斜项的PID
+extern void forward_end(int line_count);         // 回基地直走
+extern void base_start();                        //出发
+extern void base_end();                          //返回
+extern void slant_end();                         //斜着返回
 #endif
